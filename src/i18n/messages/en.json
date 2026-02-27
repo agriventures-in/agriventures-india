@@ -1,0 +1,56 @@
+{
+  "nav": {
+    "discover": "Discover",
+    "knowledge": "Knowledge Hub",
+    "jobs": "Jobs",
+    "submit": "Submit Startup",
+    "login": "Sign In",
+    "register": "Get Started"
+  },
+  "hero": {
+    "title": "Making India's 4,255+ Unfunded Agritech Startups Visible",
+    "subtitle": "The Verified Impact Platform for Indian Agritech",
+    "cta": "Explore Startups",
+    "ctaSecondary": "Submit Your Startup"
+  },
+  "discover": {
+    "title": "Discover Agritech Startups",
+    "search": "Search startups...",
+    "sort": {
+      "hot": "Hot",
+      "top": "Top",
+      "new": "New",
+      "verified": "Verified"
+    },
+    "loadMore": "Load More",
+    "noResults": "No startups found"
+  },
+  "startup": {
+    "upvote": "Upvote",
+    "verified": "Verified",
+    "submit": "Submit Your Startup",
+    "viewProfile": "View Profile"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "back": "Back",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "search": "Search",
+    "filter": "Filter",
+    "all": "All"
+  },
+  "sarpanch": {
+    "mode": "Sarpanch Mode",
+    "description": "Simplified interface in your language"
+  },
+  "footer": {
+    "platform": "Platform",
+    "resources": "Resources",
+    "company": "Company",
+    "connect": "Connect"
+  }
+}
