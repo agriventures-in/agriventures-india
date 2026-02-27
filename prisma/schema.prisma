@@ -50,6 +50,12 @@ enum ArticleCategory {
   REPORT
 }
 
+enum IntroStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+}
+
 // ─── NextAuth Required Models ────────────────────────────────────
 
 model Account {
@@ -117,6 +123,9 @@ model User {
   reviewedVerifications VerificationRequest[]  @relation("Reviewer")
   knowledgeArticles     KnowledgeArticle[]
   investorProfile       InvestorProfile?
+  notifications         Notification[]
+  introRequestsSent     IntroRequest[]    @relation("IntroFrom")
+  introRequestsReceived IntroRequest[]    @relation("IntroTo")
 
   @@map("users")
 }
@@ -163,6 +172,8 @@ model Startup {
   comments             Comment[]
   verificationRequests VerificationRequest[]
   jobs                 Job[]
+  introRequests        IntroRequest[]
+  views                StartupView[]
 
   @@index([techCategory])
   @@index([stage])
@@ -217,12 +228,13 @@ model VerificationRequest {
 }
 
 model Comment {
-  id        String   @id @default(cuid())
+  id        String    @id @default(cuid())
   userId    String
   startupId String
-  content   String   @db.Text
+  content   String    @db.Text
   parentId  String?
-  createdAt DateTime @default(now())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
 
   user    User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   startup Startup   @relation(fields: [startupId], references: [id], onDelete: Cascade)
@@ -289,4 +301,55 @@ model InvestorProfile {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("investor_profiles")
+}
+
+// ─── Phase 2 Models ─────────────────────────────────────────────
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  type      String
+  title     String
+  message   String
+  isRead    Boolean  @default(false)
+  metadata  Json?
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, isRead])
+  @@index([createdAt(sort: Desc)])
+  @@map("notifications")
+}
+
+model IntroRequest {
+  id           String      @id @default(cuid())
+  fromUserId   String
+  toUserId     String
+  startupId    String
+  message      String      @db.Text
+  status       IntroStatus @default(PENDING)
+  responseNote String?     @db.Text
+  createdAt    DateTime    @default(now())
+  respondedAt  DateTime?
+
+  fromUser User    @relation("IntroFrom", fields: [fromUserId], references: [id], onDelete: Cascade)
+  toUser   User    @relation("IntroTo", fields: [toUserId], references: [id], onDelete: Cascade)
+  startup  Startup @relation(fields: [startupId], references: [id], onDelete: Cascade)
+
+  @@unique([fromUserId, startupId])
+  @@index([toUserId, status])
+  @@map("intro_requests")
+}
+
+model StartupView {
+  id        String   @id @default(cuid())
+  startupId String
+  userId    String?
+  createdAt DateTime @default(now())
+
+  startup Startup @relation(fields: [startupId], references: [id], onDelete: Cascade)
+
+  @@index([startupId, createdAt])
+  @@map("startup_views")
 }

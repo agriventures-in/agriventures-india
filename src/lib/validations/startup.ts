@@ -93,6 +93,15 @@ export const teamSchema = z.object({
 
 // Step 7: Media & Pitch
 export const mediaSchema = z.object({
+  logoUrl: z
+    .string()
+    .url("Please enter a valid URL")
+    .optional()
+    .or(z.literal("")),
+  galleryUrls: z
+    .array(z.string().url())
+    .max(5, "You can upload up to 5 gallery images")
+    .optional(),
   pitchDeckUrl: z
     .string()
     .url("Please enter a valid URL")

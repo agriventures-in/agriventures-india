@@ -2,6 +2,8 @@ import { NextResponse } from "next/server"
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
+import { sendEmail, createNotification } from "@/lib/email"
+import { verificationStatusEmail } from "@/lib/email-templates"
 
 export async function PATCH(
   request: Request,
@@ -83,6 +85,44 @@ export async function PATCH(
           },
         }),
       ])
+    }
+
+    // Notify the founder about the verification status change (fire-and-forget)
+    const founder = await prisma.user.findUnique({
+      where: { id: verificationRequest.startup.founderId },
+      select: { id: true, email: true, fullName: true },
+    })
+
+    if (founder) {
+      sendEmail(
+        founder.email,
+        `Verification Update: ${verificationRequest.startup.name}`,
+        verificationStatusEmail(
+          founder.fullName,
+          verificationRequest.startup.name,
+          status,
+          reviewNotes || undefined
+        )
+      ).catch(console.error)
+
+      const notificationType =
+        status === "approved" ? "verification_approved" : "verification_rejected"
+      const notificationTitle =
+        status === "approved"
+          ? "Startup Verified!"
+          : "Verification Update"
+      const notificationMessage =
+        status === "approved"
+          ? `Your startup "${verificationRequest.startup.name}" has been verified.`
+          : `Your startup "${verificationRequest.startup.name}" verification was not approved.${reviewNotes ? ` Notes: ${reviewNotes}` : ""}`
+
+      createNotification(
+        founder.id,
+        notificationType,
+        notificationTitle,
+        notificationMessage,
+        { startupId: verificationRequest.startupId, status }
+      ).catch(console.error)
     }
 
     return NextResponse.json({ success: true })

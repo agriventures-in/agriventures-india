@@ -32,4 +32,13 @@ export const env = {
   get LINKEDIN_CLIENT_SECRET() {
     return process.env.LINKEDIN_CLIENT_SECRET || ""
   },
+  get BLOB_READ_WRITE_TOKEN() {
+    return process.env.BLOB_READ_WRITE_TOKEN || ""
+  },
+  get RESEND_API_KEY() {
+    return process.env.RESEND_API_KEY || ""
+  },
+  get FROM_EMAIL() {
+    return process.env.FROM_EMAIL || "AgriVentures India <onboarding@resend.dev>"
+  },
 }

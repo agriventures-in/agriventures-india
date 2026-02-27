@@ -2,6 +2,8 @@ import { hash } from "bcryptjs"
 import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 import { registerSchema } from "@/lib/validations/auth"
+import { sendEmail, createNotification } from "@/lib/email"
+import { welcomeEmail } from "@/lib/email-templates"
 
 export async function POST(req: Request) {
   try {
@@ -53,6 +55,20 @@ export async function POST(req: Request) {
         createdAt: true,
       },
     })
+
+    // Send welcome email (fire-and-forget)
+    sendEmail(
+      user.email,
+      "Welcome to AgriVentures India!",
+      welcomeEmail(user.fullName)
+    ).catch(console.error)
+
+    createNotification(
+      user.id,
+      "welcome",
+      "Welcome to AgriVentures!",
+      "Your account has been created. Start exploring India's agritech ecosystem."
+    ).catch(console.error)
 
     return NextResponse.json(
       { user, message: "Account created successfully" },

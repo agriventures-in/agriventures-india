@@ -1,5 +1,6 @@
 "use client"
 
+import { useCallback } from "react"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import {
@@ -9,8 +10,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { ImageUpload } from "@/components/ui/image-upload"
+import { FileUpload } from "@/components/ui/file-upload"
 import { FUNDING_STATUSES } from "@/lib/constants"
-import { FileText, Video, Wallet } from "lucide-react"
+import { FileText, Video, Wallet, Images, X } from "lucide-react"
 import type { WizardFormData } from "@/components/startup/submit-wizard"
 
 interface StepMediaProps {
@@ -20,8 +23,94 @@ interface StepMediaProps {
 }
 
 export function StepMedia({ formData, updateFormData, errors }: StepMediaProps) {
+  const handleGalleryUpload = useCallback(
+    (url: string) => {
+      if (formData.galleryUrls.length < 5) {
+        updateFormData({ galleryUrls: [...formData.galleryUrls, url] })
+      }
+    },
+    [formData.galleryUrls, updateFormData]
+  )
+
+  const handleGalleryRemove = useCallback(
+    (index: number) => {
+      updateFormData({
+        galleryUrls: formData.galleryUrls.filter((_, i) => i !== index),
+      })
+    },
+    [formData.galleryUrls, updateFormData]
+  )
+
   return (
     <div className="space-y-6">
+      {/* Startup Logo */}
+      <div className="space-y-3">
+        <Label>Startup Logo</Label>
+        <p className="text-xs text-muted-foreground">
+          Upload your startup&apos;s logo. Square images work best (recommended: 120x120px).
+        </p>
+        <ImageUpload
+          value={formData.logoUrl || undefined}
+          onChange={(url) => updateFormData({ logoUrl: url })}
+          variant="logo"
+        />
+        {errors.logoUrl && (
+          <p className="text-sm text-destructive">{errors.logoUrl}</p>
+        )}
+      </div>
+
+      {/* Gallery */}
+      <div className="space-y-3">
+        <div className="flex items-center gap-2">
+          <Images className="h-4 w-4 text-muted-foreground" />
+          <Label>Gallery Images</Label>
+        </div>
+        <p className="text-xs text-muted-foreground">
+          Upload up to 5 images showcasing your product, team, or field work.
+        </p>
+
+        {/* Gallery preview grid */}
+        {formData.galleryUrls.length > 0 && (
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+            {formData.galleryUrls.map((url, index) => (
+              <div
+                key={url}
+                className="group relative aspect-video overflow-hidden rounded-lg border bg-muted"
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={url}
+                  alt={`Gallery image ${index + 1}`}
+                  className="h-full w-full object-cover"
+                />
+                <button
+                  type="button"
+                  onClick={() => handleGalleryRemove(index)}
+                  className="absolute right-1.5 top-1.5 rounded-full bg-black/60 p-1 text-white opacity-0 transition-opacity hover:bg-destructive group-hover:opacity-100"
+                  aria-label={`Remove image ${index + 1}`}
+                >
+                  <X className="h-3.5 w-3.5" />
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Upload new gallery image */}
+        {formData.galleryUrls.length < 5 && (
+          <FileUpload
+            onUpload={handleGalleryUpload}
+            accept="image/jpeg,image/png,image/webp,image/gif"
+            maxSizeMB={4}
+            label={`Add image (${formData.galleryUrls.length}/5)`}
+          />
+        )}
+
+        {errors.galleryUrls && (
+          <p className="text-sm text-destructive">{errors.galleryUrls}</p>
+        )}
+      </div>
+
       {/* Pitch Deck */}
       <div className="space-y-3">
         <div className="flex items-center gap-2">

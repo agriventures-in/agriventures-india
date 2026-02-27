@@ -5,6 +5,8 @@ import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { slugify } from "@/lib/utils"
 import { createStartupSchema } from "@/lib/validations/startup"
+import { sendEmail, createNotification } from "@/lib/email"
+import { startupSubmittedEmail } from "@/lib/email-templates"
 
 export async function POST(req: NextRequest) {
   try {
@@ -58,6 +60,8 @@ export async function POST(req: NextRequest) {
           impactMetrics: data.impactMetrics,
           fieldTrialData: data.fieldTrialData,
           teamSize: data.teamSize,
+          logoUrl: data.logoUrl || null,
+          galleryUrls: data.galleryUrls ?? undefined,
           pitchDeckUrl: data.pitchDeckUrl || null,
           demoVideoUrl: data.demoVideoUrl || null,
           fundingStatus: data.fundingStatus || null,
@@ -88,6 +92,23 @@ export async function POST(req: NextRequest) {
 
       return newStartup
     })
+
+    // Notify founder (fire-and-forget)
+    const founderEmail = session.user.email
+    if (founderEmail) {
+      sendEmail(
+        founderEmail,
+        `Startup Submitted: ${data.name}`,
+        startupSubmittedEmail(session.user.name || "Founder", data.name)
+      ).catch(console.error)
+    }
+
+    createNotification(
+      session.user.id,
+      "startup_submitted",
+      "Startup Submitted!",
+      `Your startup "${data.name}" has been submitted for review.`
+    ).catch(console.error)
 
     return NextResponse.json(startup, { status: 201 })
   } catch (error) {

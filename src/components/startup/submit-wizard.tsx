@@ -75,6 +75,8 @@ export type WizardFormData = {
   teamSize: number
   teamMembers: { name: string; role: string; linkedinUrl: string }[]
   // Step 7: Media
+  logoUrl: string
+  galleryUrls: string[]
   pitchDeckUrl: string
   demoVideoUrl: string
   fundingStatus: string
@@ -104,6 +106,8 @@ const initialFormData: WizardFormData = {
   },
   teamSize: 1,
   teamMembers: [{ name: "", role: "", linkedinUrl: "" }],
+  logoUrl: "",
+  galleryUrls: [],
   pitchDeckUrl: "",
   demoVideoUrl: "",
   fundingStatus: "",
@@ -161,6 +165,8 @@ export function SubmitWizard() {
         }
       case 6:
         return {
+          logoUrl: formData.logoUrl || undefined,
+          galleryUrls: formData.galleryUrls.length > 0 ? formData.galleryUrls : undefined,
           pitchDeckUrl: formData.pitchDeckUrl || undefined,
           demoVideoUrl: formData.demoVideoUrl || undefined,
           fundingStatus: formData.fundingStatus || undefined,
@@ -225,6 +231,8 @@ export function SubmitWizard() {
         fieldTrialData: formData.fieldTrialData,
         teamSize: formData.teamSize,
         teamMembers: formData.teamMembers,
+        logoUrl: formData.logoUrl || undefined,
+        galleryUrls: formData.galleryUrls.length > 0 ? formData.galleryUrls : undefined,
         pitchDeckUrl: formData.pitchDeckUrl || undefined,
         demoVideoUrl: formData.demoVideoUrl || undefined,
         fundingStatus: formData.fundingStatus || undefined,

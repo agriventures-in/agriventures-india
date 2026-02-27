@@ -25,6 +25,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { useAppStore } from "@/store/app-store"
 import { MobileNav } from "@/components/layout/mobile-nav"
+import { NotificationBell } from "@/components/layout/notification-bell"
 import { useTranslations } from "@/hooks/use-translations"
 import { languages, type Language } from "@/i18n/config"
 
@@ -124,6 +125,8 @@ export function Header() {
 
           {/* Auth */}
           {session?.user ? (
+            <>
+            <NotificationBell />
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
@@ -196,6 +199,7 @@ export function Header() {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
+            </>
           ) : (
             <div className="flex items-center gap-2">
               <Link href="/auth/signin">
