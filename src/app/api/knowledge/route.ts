@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { getServerSession } from "next-auth/next"
+import { nanoid } from "nanoid"
 import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { slugify } from "@/lib/utils"
@@ -8,9 +9,9 @@ export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url)
     const category = searchParams.get("category")
-    const search = searchParams.get("search")
-    const page = parseInt(searchParams.get("page") || "1")
-    const limit = parseInt(searchParams.get("limit") || "20")
+    const search = searchParams.get("search")?.slice(0, 200) || null
+    const page = Math.max(1, parseInt(searchParams.get("page") || "1") || 1)
+    const limit = Math.max(1, Math.min(parseInt(searchParams.get("limit") || "20") || 20, 100))
     const skip = (page - 1) * limit
 
     const where: any = {
@@ -70,7 +71,12 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    const body = await request.json()
+    let body
+    try {
+      body = await request.json()
+    } catch {
+      return NextResponse.json({ error: "Invalid request body" }, { status: 400 })
+    }
     const { title, category, content, excerpt, tags } = body
 
     if (!title || !category || !content) {
@@ -87,15 +93,8 @@ export async function POST(request: Request) {
       )
     }
 
-    // Generate unique slug
-    const baseSlug = slugify(title)
-    let slug = baseSlug
-    let counter = 1
-
-    while (await prisma.knowledgeArticle.findUnique({ where: { slug } })) {
-      slug = `${baseSlug}-${counter}`
-      counter++
-    }
+    // Generate unique slug with random suffix to prevent race conditions
+    const slug = slugify(title) + "-" + nanoid(6)
 
     const article = await prisma.knowledgeArticle.create({
       data: {

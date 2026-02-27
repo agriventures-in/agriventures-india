@@ -16,7 +16,6 @@ export async function GET(
             id: true,
             fullName: true,
             avatarUrl: true,
-            email: true,
             linkedinUrl: true,
             organization: true,
           },
@@ -73,7 +72,12 @@ export async function PATCH(
       )
     }
 
-    const body = await req.json()
+    let body
+    try {
+      body = await req.json()
+    } catch {
+      return NextResponse.json({ error: "Invalid request body" }, { status: 400 })
+    }
     const isAdmin = session.user.role === "ADMIN"
 
     // Build update data based on role

@@ -20,7 +20,12 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    const body = await req.json()
+    let body
+    try {
+      body = await req.json()
+    } catch {
+      return NextResponse.json({ error: "Invalid request body" }, { status: 400 })
+    }
     const parsed = createStartupSchema.safeParse(body)
 
     if (!parsed.success) {
@@ -100,11 +105,11 @@ export async function GET(req: NextRequest) {
     const category = searchParams.get("category")
     const stage = searchParams.get("stage")
     const state = searchParams.get("state")
-    const search = searchParams.get("search")
+    const search = searchParams.get("search")?.slice(0, 200) || null
     const sort = searchParams.get("sort") || "hot"
     const verified = searchParams.get("verified")
-    const page = parseInt(searchParams.get("page") || "1")
-    const limit = parseInt(searchParams.get("limit") || "20")
+    const page = Math.max(1, parseInt(searchParams.get("page") || "1") || 1)
+    const limit = Math.max(1, Math.min(parseInt(searchParams.get("limit") || "20") || 20, 100))
     const skip = (page - 1) * limit
 
     // Build where clause
@@ -116,8 +121,8 @@ export async function GET(req: NextRequest) {
       where.techCategory = category
     }
 
-    if (stage) {
-      where.stage = stage as any
+    if (stage && ["IDEATION", "VALIDATION", "EARLY_TRACTION", "GROWTH", "SCALING"].includes(stage)) {
+      where.stage = stage
     }
 
     if (state) {

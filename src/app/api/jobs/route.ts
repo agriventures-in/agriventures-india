@@ -8,10 +8,10 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url)
     const type = searchParams.get("type")
     const location = searchParams.get("location")
-    const search = searchParams.get("search")
+    const search = searchParams.get("search")?.slice(0, 200) || null
     const isActive = searchParams.get("isActive")
-    const page = parseInt(searchParams.get("page") || "1")
-    const limit = parseInt(searchParams.get("limit") || "20")
+    const page = Math.max(1, parseInt(searchParams.get("page") || "1") || 1)
+    const limit = Math.max(1, Math.min(parseInt(searchParams.get("limit") || "20") || 20, 100))
     const skip = (page - 1) * limit
 
     const where: any = {}
@@ -82,7 +82,12 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    const body = await request.json()
+    let body
+    try {
+      body = await request.json()
+    } catch {
+      return NextResponse.json({ error: "Invalid request body" }, { status: 400 })
+    }
     const {
       startupId,
       title,

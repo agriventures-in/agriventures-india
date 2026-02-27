@@ -196,6 +196,7 @@ model Upvote {
   startup Startup @relation(fields: [startupId], references: [id], onDelete: Cascade)
 
   @@unique([userId, startupId])
+  @@index([startupId])
   @@map("upvotes")
 }
 
@@ -228,6 +229,7 @@ model Comment {
   parent  Comment?  @relation("CommentReplies", fields: [parentId], references: [id])
   replies Comment[] @relation("CommentReplies")
 
+  @@index([startupId])
   @@map("comments")
 }
 
@@ -246,6 +248,8 @@ model KnowledgeArticle {
 
   author User @relation(fields: [authorId], references: [id])
 
+  @@index([category])
+  @@index([isPublished])
   @@map("knowledge_articles")
 }
 
@@ -265,6 +269,8 @@ model Job {
 
   startup Startup @relation(fields: [startupId], references: [id], onDelete: Cascade)
 
+  @@index([startupId])
+  @@index([postedAt(sort: Desc)])
   @@map("jobs")
 }
 
