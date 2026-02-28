@@ -26,6 +26,7 @@ import { ImpactMetricsDisplay } from "@/components/startup/impact-metrics-displa
 import { TeamGrid } from "@/components/startup/team-grid"
 import { IntroRequestDialog } from "@/components/startup/intro-request-dialog"
 import { CommentsSection } from "@/components/comments/comments-section"
+import { ShareButtons } from "@/components/startup/share-buttons"
 
 type VerificationLevel = "NONE" | "COMMUNITY" | "EXPERT" | "FULL"
 
@@ -193,7 +194,7 @@ export function StartupProfileView({ startup }: StartupProfileViewProps) {
                     )}
                   </div>
 
-                  <div className="flex items-center gap-3 pt-2">
+                  <div className="flex flex-wrap items-center gap-3 pt-2">
                     <UpvoteButton
                       startupId={startup.id}
                       initialCount={startup.upvoteCount}
@@ -208,6 +209,12 @@ export function StartupProfileView({ startup }: StartupProfileViewProps) {
                         <Eye className="h-4 w-4" />
                         {startup.viewCount} views
                       </span>
+                    </div>
+                    <div className="ml-auto">
+                      <ShareButtons
+                        startupName={startup.name}
+                        startupSlug={startup.slug}
+                      />
                     </div>
                   </div>
                 </div>

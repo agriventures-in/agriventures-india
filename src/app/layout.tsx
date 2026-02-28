@@ -44,12 +44,22 @@ export const metadata: Metadata = {
     title: "AgriVentures India — The Verified Impact Platform for Indian Agritech",
     description:
       "Making India's 4,255+ unfunded agritech startups visible to investors, corporates, and farmers.",
+    images: [
+      {
+        url: "/api/og?title=AgriVentures%20India&tagline=Making%20India%27s%20Agritech%20Startups%20Visible",
+        width: 1200,
+        height: 630,
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "AgriVentures India",
     description:
       "The Verified Impact Platform for Indian Agritech.",
+    images: [
+      "/api/og?title=AgriVentures%20India&tagline=Making%20India%27s%20Agritech%20Startups%20Visible",
+    ],
   },
   robots: {
     index: true,

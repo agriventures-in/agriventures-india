@@ -18,6 +18,9 @@ import {
   FileEdit,
   Eye,
 } from "lucide-react"
+import { AdminCharts } from "@/components/admin/admin-charts"
+import { ExportButtons } from "@/components/admin/export-buttons"
+import { ActivityLog } from "@/components/admin/activity-log"
 
 export const dynamic = "force-dynamic"
 
@@ -89,12 +92,15 @@ export default async function AdminDashboardPage() {
 
   return (
     <div className="space-y-8">
-      {/* Page Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-slate-900">Dashboard Overview</h1>
-        <p className="mt-1 text-sm text-slate-500">
-          Monitor platform activity and manage operations.
-        </p>
+      {/* Page Header with Export Buttons */}
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-slate-900">Dashboard Overview</h1>
+          <p className="mt-1 text-sm text-slate-500">
+            Monitor platform activity and manage operations.
+          </p>
+        </div>
+        <ExportButtons />
       </div>
 
       {/* Top Stats Grid */}
@@ -183,6 +189,9 @@ export default async function AdminDashboardPage() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Analytics Charts */}
+      <AdminCharts />
 
       {/* Breakdown Cards */}
       <div className="grid gap-6 lg:grid-cols-2">
@@ -277,6 +286,9 @@ export default async function AdminDashboardPage() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Activity Log */}
+      <ActivityLog />
 
       {/* User Role Breakdown */}
       <Card>

@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { prisma } from "@/lib/prisma"
 import { StartupProfileView } from "@/components/startup/profile-view"
-import { TECH_CATEGORIES } from "@/lib/constants"
+import { TECH_CATEGORIES, STARTUP_STAGES } from "@/lib/constants"
 
 interface StartupPageProps {
   params: { slug: string }
@@ -48,6 +48,31 @@ export async function generateMetadata({
   const categoryLabel =
     TECH_CATEGORIES.find((c) => c.value === startup.techCategory)?.label ||
     startup.techCategory
+  const stageLabel =
+    STARTUP_STAGES.find((s) => s.value === startup.stage)?.label ||
+    startup.stage
+
+  const ogUrl = new URL(
+    "/api/og",
+    process.env.NEXTAUTH_URL || "https://agriventures.in"
+  )
+  ogUrl.searchParams.set("title", startup.name)
+  ogUrl.searchParams.set("tagline", startup.tagline)
+  ogUrl.searchParams.set("category", categoryLabel)
+  ogUrl.searchParams.set("stage", stageLabel)
+  if (startup.state) {
+    ogUrl.searchParams.set(
+      "location",
+      startup.district
+        ? `${startup.district}, ${startup.state}`
+        : startup.state
+    )
+  }
+  ogUrl.searchParams.set("upvotes", String(startup.upvoteCount))
+  ogUrl.searchParams.set("views", String(startup.viewCount))
+  if (startup.verificationLevel !== "NONE") {
+    ogUrl.searchParams.set("verified", "true")
+  }
 
   return {
     title: startup.name,
@@ -56,7 +81,13 @@ export async function generateMetadata({
       title: `${startup.name} | AgriVentures India`,
       description: startup.tagline,
       type: "website",
-      images: startup.logoUrl ? [{ url: startup.logoUrl }] : [],
+      images: [{ url: ogUrl.toString(), width: 1200, height: 630 }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${startup.name} | AgriVentures India`,
+      description: startup.tagline,
+      images: [ogUrl.toString()],
     },
     keywords: [
       startup.name,
