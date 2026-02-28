@@ -12,6 +12,7 @@ import {
   LayoutDashboard,
   LogOut,
   Globe,
+  Handshake,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
@@ -186,6 +187,17 @@ export function Header() {
                     >
                       <LayoutDashboard className="h-4 w-4" />
                       Dashboard
+                    </Link>
+                  </DropdownMenuItem>
+                )}
+                {(userRole === "INVESTOR" || userRole === "FOUNDER") && (
+                  <DropdownMenuItem asChild>
+                    <Link
+                      href="/intros"
+                      className="flex items-center gap-2"
+                    >
+                      <Handshake className="h-4 w-4" />
+                      Introductions
                     </Link>
                   </DropdownMenuItem>
                 )}

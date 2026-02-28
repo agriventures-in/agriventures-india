@@ -1,7 +1,6 @@
 "use client"
 
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -18,12 +17,15 @@ import {
   Video,
   HandCoins,
 } from "lucide-react"
+import { useSession } from "next-auth/react"
 import { TECH_CATEGORIES, STARTUP_STAGES, FUNDING_STATUSES } from "@/lib/constants"
 import { VerificationBadge } from "@/components/startup/verification-badge"
 import { VerificationProgress } from "@/components/startup/verification-progress"
 import { UpvoteButton } from "@/components/startup/upvote-button"
 import { ImpactMetricsDisplay } from "@/components/startup/impact-metrics-display"
 import { TeamGrid } from "@/components/startup/team-grid"
+import { IntroRequestDialog } from "@/components/startup/intro-request-dialog"
+import { CommentsSection } from "@/components/comments/comments-section"
 
 type VerificationLevel = "NONE" | "COMMUNITY" | "EXPERT" | "FULL"
 
@@ -83,6 +85,10 @@ interface StartupProfileViewProps {
 }
 
 export function StartupProfileView({ startup }: StartupProfileViewProps) {
+  const { data: session } = useSession()
+  const isLoggedIn = !!session?.user
+  const isFounder = session?.user?.id === startup.founder.id
+
   const categoryLabel =
     TECH_CATEGORIES.find((c) => c.value === startup.techCategory)?.label ||
     startup.techCategory
@@ -218,6 +224,9 @@ export function StartupProfileView({ startup }: StartupProfileViewProps) {
               <TabsTrigger value="team">Team</TabsTrigger>
               <TabsTrigger value="gallery">Gallery</TabsTrigger>
               <TabsTrigger value="funding">Funding</TabsTrigger>
+              <TabsTrigger value="comments">
+                Comments ({startup._count.comments})
+              </TabsTrigger>
             </TabsList>
 
             {/* About Tab */}
@@ -461,6 +470,11 @@ export function StartupProfileView({ startup }: StartupProfileViewProps) {
                 </CardContent>
               </Card>
             </TabsContent>
+
+            {/* Comments Tab */}
+            <TabsContent value="comments">
+              <CommentsSection startupId={startup.id} />
+            </TabsContent>
           </Tabs>
         </div>
 
@@ -557,14 +571,21 @@ export function StartupProfileView({ startup }: StartupProfileViewProps) {
           </Card>
 
           {/* Request Introduction */}
-          <Card>
-            <CardContent className="p-5">
-              <Button className="w-full">Request Introduction</Button>
-              <p className="mt-2 text-center text-xs text-muted-foreground">
-                Connect with the founder through AgriVentures
-              </p>
-            </CardContent>
-          </Card>
+          {isLoggedIn && !isFounder && (
+            <Card>
+              <CardContent className="p-5">
+                <IntroRequestDialog
+                  startupId={startup.id}
+                  startupName={startup.name}
+                  founderId={startup.founder.id}
+                  founderName={startup.founder.fullName}
+                />
+                <p className="mt-2 text-center text-xs text-muted-foreground">
+                  Connect with the founder through AgriVentures
+                </p>
+              </CardContent>
+            </Card>
+          )}
 
           {/* Jobs */}
           {startup._count.jobs > 0 && (
