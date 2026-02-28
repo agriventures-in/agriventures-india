@@ -41,6 +41,9 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
+import { ImageUpload } from "@/components/ui/image-upload"
+import { AccountStats } from "@/components/profile/account-stats"
+import { ActivityFeed } from "@/components/profile/activity-feed"
 import type { UserRole, StartupStatus } from "@prisma/client"
 
 const editProfileSchema = z.object({
@@ -52,6 +55,12 @@ const editProfileSchema = z.object({
     .string()
     .url("Please enter a valid URL")
     .optional()
+    .or(z.literal("")),
+  avatarUrl: z
+    .string()
+    .url("Please enter a valid URL")
+    .optional()
+    .nullable()
     .or(z.literal("")),
 })
 
@@ -76,6 +85,12 @@ interface InvestorProfile {
   websiteUrl: string | null
 }
 
+interface ProfileStats {
+  upvoteCount: number
+  commentCount: number
+  startupCount: number
+}
+
 interface ProfileData {
   id: string
   fullName: string
@@ -90,6 +105,7 @@ interface ProfileData {
   createdAt: string
   startups: Startup[]
   investorProfile: InvestorProfile | null
+  stats: ProfileStats
 }
 
 const ROLE_CONFIG: Record<
@@ -161,8 +177,28 @@ export function ProfileView({ profile }: { profile: ProfileData }) {
       organization: profile.organization ?? "",
       phone: profile.phone ?? "",
       linkedinUrl: profile.linkedinUrl ?? "",
+      avatarUrl: profile.avatarUrl ?? "",
     },
   })
+
+  async function handleAvatarChange(url: string) {
+    form.setValue("avatarUrl", url)
+    // Save avatar immediately to API
+    try {
+      const res = await fetch("/api/users/me", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ avatarUrl: url }),
+      })
+      if (!res.ok) {
+        throw new Error("Failed to update avatar")
+      }
+      toast.success("Avatar updated!")
+      router.refresh()
+    } catch {
+      toast.error("Failed to update avatar")
+    }
+  }
 
   async function onSave(values: EditProfileInput) {
     setIsSaving(true)
@@ -276,6 +312,18 @@ export function ProfileView({ profile }: { profile: ProfileData }) {
                         onSubmit={form.handleSubmit(onSave)}
                         className="space-y-4"
                       >
+                        {/* Avatar Upload */}
+                        <div className="flex flex-col items-center gap-2">
+                          <ImageUpload
+                            variant="avatar"
+                            value={form.watch("avatarUrl") || undefined}
+                            onChange={handleAvatarChange}
+                          />
+                          <p className="text-xs text-muted-foreground">
+                            Click to upload a profile photo
+                          </p>
+                        </div>
+
                         <FormField
                           control={form.control}
                           name="fullName"
@@ -386,6 +434,17 @@ export function ProfileView({ profile }: { profile: ProfileData }) {
           </div>
         </CardContent>
       </Card>
+
+      {/* Account Stats */}
+      <AccountStats
+        memberSince={profile.createdAt}
+        upvoteCount={profile.stats.upvoteCount}
+        commentCount={profile.stats.commentCount}
+        startupCount={profile.role === "FOUNDER" ? profile.stats.startupCount : undefined}
+      />
+
+      {/* Activity Feed */}
+      <ActivityFeed />
 
       {/* Founder: My Startups */}
       {profile.role === "FOUNDER" && (

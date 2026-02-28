@@ -25,6 +25,15 @@ export default withAuth(
       return NextResponse.redirect(new URL("/login", req.url))
     }
 
+    // Dashboard routes require FOUNDER or ADMIN
+    if (
+      pathname.startsWith("/dashboard") &&
+      token?.role !== "FOUNDER" &&
+      token?.role !== "ADMIN"
+    ) {
+      return NextResponse.redirect(new URL("/login", req.url))
+    }
+
     return NextResponse.next()
   },
   {

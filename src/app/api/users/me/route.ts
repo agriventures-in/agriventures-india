@@ -22,6 +22,12 @@ const updateProfileSchema = z.object({
     .optional()
     .nullable()
     .or(z.literal("")),
+  avatarUrl: z
+    .string()
+    .url("Please enter a valid URL")
+    .optional()
+    .nullable()
+    .or(z.literal("")),
   preferredLanguage: z.string().optional(),
 })
 
@@ -82,7 +88,7 @@ export async function PATCH(req: Request) {
       )
     }
 
-    const { fullName, bio, organization, phone, linkedinUrl, preferredLanguage } =
+    const { fullName, bio, organization, phone, linkedinUrl, avatarUrl, preferredLanguage } =
       parsed.data
 
     // Build update data, only including provided fields
@@ -92,6 +98,7 @@ export async function PATCH(req: Request) {
     if (organization !== undefined) updateData.organization = organization || null
     if (phone !== undefined) updateData.phone = phone || null
     if (linkedinUrl !== undefined) updateData.linkedinUrl = linkedinUrl || null
+    if (avatarUrl !== undefined) updateData.avatarUrl = avatarUrl || null
     if (preferredLanguage !== undefined) updateData.preferredLanguage = preferredLanguage
 
     const user = await prisma.user.update({

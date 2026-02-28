@@ -6,6 +6,8 @@ import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { ProfileView } from "@/components/profile/profile-view"
 
+export const dynamic = "force-dynamic"
+
 export const metadata: Metadata = {
   title: "My Profile",
   description: "View and manage your AgriVentures profile.",
@@ -18,44 +20,51 @@ export default async function ProfilePage() {
     redirect("/login?callbackUrl=/profile")
   }
 
-  const user = await prisma.user.findUnique({
-    where: { id: session.user.id },
-    select: {
-      id: true,
-      fullName: true,
-      email: true,
-      avatarUrl: true,
-      role: true,
-      phone: true,
-      linkedinUrl: true,
-      organization: true,
-      bio: true,
-      preferredLanguage: true,
-      createdAt: true,
-      startups: {
-        select: {
-          id: true,
-          name: true,
-          slug: true,
-          tagline: true,
-          status: true,
-          techCategory: true,
-          stage: true,
+  const userId = session.user.id
+
+  // Fetch user data and stats counts in parallel
+  const [user, upvoteCount, commentCount] = await Promise.all([
+    prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        id: true,
+        fullName: true,
+        email: true,
+        avatarUrl: true,
+        role: true,
+        phone: true,
+        linkedinUrl: true,
+        organization: true,
+        bio: true,
+        preferredLanguage: true,
+        createdAt: true,
+        startups: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+            tagline: true,
+            status: true,
+            techCategory: true,
+            stage: true,
+          },
+          orderBy: { createdAt: "desc" },
         },
-        orderBy: { createdAt: "desc" },
-      },
-      investorProfile: {
-        select: {
-          firmName: true,
-          thesis: true,
-          checkSizeMin: true,
-          checkSizeMax: true,
-          portfolioCount: true,
-          websiteUrl: true,
+        investorProfile: {
+          select: {
+            firmName: true,
+            thesis: true,
+            checkSizeMin: true,
+            checkSizeMax: true,
+            portfolioCount: true,
+            websiteUrl: true,
+          },
         },
       },
-    },
-  })
+    }),
+    prisma.upvote.count({ where: { userId } }),
+    prisma.comment.count({ where: { userId } }),
+  ])
 
   if (!user) {
     redirect("/login")
@@ -64,6 +73,11 @@ export default async function ProfilePage() {
   const profileData = {
     ...user,
     createdAt: user.createdAt.toISOString(),
+    stats: {
+      upvoteCount,
+      commentCount,
+      startupCount: user.startups.length,
+    },
   }
 
   return (
