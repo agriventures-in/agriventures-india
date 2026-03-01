@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { MapPin, MessageSquare } from "lucide-react"
@@ -77,9 +78,11 @@ export function StartupCard({ startup }: StartupCardProps) {
           {/* Logo / Initial */}
           <div className="flex-shrink-0">
             {startup.logoUrl ? (
-              <img
+              <Image
                 src={startup.logoUrl}
                 alt={startup.name}
+                width={56}
+                height={56}
                 className="h-14 w-14 rounded-xl object-cover"
               />
             ) : (

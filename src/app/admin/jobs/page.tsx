@@ -74,7 +74,7 @@ export default async function JobsManagementPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {jobs.map((job: any) => {
+                {jobs.map((job) => {
                   const expired = isExpired(job.expiresAt)
                   const status = !job.isActive
                     ? "Inactive"

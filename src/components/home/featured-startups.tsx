@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import { motion, useInView } from "framer-motion"
 import { useRef } from "react"
 import { ArrowRight, ArrowUpRight, MapPin } from "lucide-react"
@@ -109,9 +110,11 @@ export function FeaturedStartups({ startups }: FeaturedStartupsProps) {
                       <div className="flex items-start gap-4">
                         {/* Logo / Initial */}
                         {startup.logoUrl ? (
-                          <img
+                          <Image
                             src={startup.logoUrl}
                             alt={startup.name}
+                            width={48}
+                            height={48}
                             className="h-12 w-12 flex-shrink-0 rounded-xl object-cover"
                           />
                         ) : (

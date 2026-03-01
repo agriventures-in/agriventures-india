@@ -81,7 +81,7 @@ export async function PATCH(
       "expiresAt",
     ]
 
-    const updateData: Record<string, any> = {}
+    const updateData: Record<string, unknown> = {}
     for (const field of allowedFields) {
       if (body[field] !== undefined) {
         if (field === "expiresAt" && body[field]) {

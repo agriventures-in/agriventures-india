@@ -259,7 +259,7 @@ export default async function AdminDashboardPage() {
               <p className="text-sm text-slate-500">No startups yet.</p>
             ) : (
               <div className="space-y-3">
-                {stats.recentStartups.map((startup: any) => (
+                {stats.recentStartups.map((startup) => (
                   <div
                     key={startup.id}
                     className="flex items-center justify-between rounded-lg border border-slate-100 p-3"

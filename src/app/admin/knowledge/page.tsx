@@ -82,7 +82,7 @@ export default async function KnowledgeManagementPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {articles.map((article: any) => (
+                {articles.map((article) => (
                   <TableRow key={article.id}>
                     <TableCell className="pl-4">
                       <div>

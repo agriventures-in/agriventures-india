@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic"
 
 import { Metadata } from "next"
+import Image from "next/image"
 import { redirect } from "next/navigation"
 import { getServerSession } from "next-auth"
 import Link from "next/link"
@@ -143,9 +144,11 @@ export default async function MyStartupsPage() {
                   <div className="flex gap-4">
                     {/* Logo / Initials */}
                     {startup.logoUrl ? (
-                      <img
+                      <Image
                         src={startup.logoUrl}
                         alt={startup.name}
+                        width={48}
+                        height={48}
                         className="h-12 w-12 flex-shrink-0 rounded-lg object-cover"
                       />
                     ) : (

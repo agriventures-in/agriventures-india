@@ -81,7 +81,7 @@ export async function PATCH(
     const isAdmin = session.user.role === "ADMIN"
 
     // Build update data based on role
-    const updateData: Record<string, any> = {}
+    const updateData: Record<string, unknown> = {}
 
     if (isAdmin) {
       // Admins can update featured status, verification level, and status

@@ -1,3 +1,4 @@
+import { StartupStatus } from "@prisma/client"
 import { prisma } from "@/lib/prisma"
 import { Badge } from "@/components/ui/badge"
 import {
@@ -41,7 +42,7 @@ function getStageLabel(value: string) {
 }
 
 async function getStartups(status?: string) {
-  const where = status && status !== "ALL" ? { status: status as any } : {}
+  const where = status && status !== "ALL" ? { status: status as StartupStatus } : {}
 
   return prisma.startup.findMany({
     where,
@@ -97,7 +98,7 @@ export default async function StartupsManagementPage({
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {startups.map((startup: any) => (
+                {startups.map((startup) => (
                   <TableRow key={startup.id}>
                     <TableCell className="pl-4">
                       <div className="flex items-center gap-2">

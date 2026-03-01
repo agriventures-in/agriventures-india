@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import { Card, CardContent } from "@/components/ui/card"
 import { ExternalLink } from "lucide-react"
 
@@ -33,9 +34,11 @@ export function TeamGrid({ members }: TeamGridProps) {
             <CardContent className="flex items-center gap-4 p-5">
               {/* Avatar */}
               {member.avatarUrl ? (
-                <img
+                <Image
                   src={member.avatarUrl}
                   alt={member.name}
+                  width={48}
+                  height={48}
                   className="h-12 w-12 rounded-full object-cover"
                 />
               ) : (

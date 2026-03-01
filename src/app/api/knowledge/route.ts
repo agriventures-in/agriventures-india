@@ -14,7 +14,8 @@ export async function GET(request: Request) {
     const limit = Math.max(1, Math.min(parseInt(searchParams.get("limit") || "20") || 20, 100))
     const skip = (page - 1) * limit
 
-    const where: any = {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const where: Record<string, any> = {
       isPublished: true,
     }
 

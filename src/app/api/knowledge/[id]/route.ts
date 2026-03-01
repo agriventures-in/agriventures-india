@@ -62,7 +62,7 @@ export async function PATCH(
       "publishedAt",
     ]
 
-    const updateData: Record<string, any> = {}
+    const updateData: Record<string, unknown> = {}
     for (const field of allowedFields) {
       if (body[field] !== undefined) {
         updateData[field] = body[field]

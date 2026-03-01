@@ -2,7 +2,7 @@
 
 import { useCallback, useRef, useState } from "react"
 import { cn } from "@/lib/utils"
-import { Upload, X, FileText, Image, Loader2 } from "lucide-react"
+import { Upload, X, FileText, Image as ImageIcon, Loader2 } from "lucide-react"
 
 interface FileUploadProps {
   onUpload: (url: string) => void
@@ -228,7 +228,7 @@ export function FileUpload({
           <>
             <div className="rounded-full bg-muted p-3">
               {accept?.startsWith("image") ? (
-                <Image className="h-6 w-6 text-muted-foreground" />
+                <ImageIcon className="h-6 w-6 text-muted-foreground" />
               ) : (
                 <Upload className="h-6 w-6 text-muted-foreground" />
               )}

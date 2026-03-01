@@ -1,5 +1,7 @@
 "use client"
 
+import Image from "next/image"
+import type { JsonValue } from "@prisma/client/runtime/library"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
@@ -43,7 +45,7 @@ interface StartupProfileViewProps {
     foundedYear: number | null
     stage: string
     techCategory: string
-    subCategories: any
+    subCategories: JsonValue
     state: string | null
     district: string | null
     teamSize: number | null
@@ -52,11 +54,11 @@ interface StartupProfileViewProps {
     problemStatement: string | null
     solution: string | null
     businessModel: string | null
-    impactMetrics: any
-    fieldTrialData: any
+    impactMetrics: JsonValue
+    fieldTrialData: JsonValue
     pitchDeckUrl: string | null
     demoVideoUrl: string | null
-    galleryUrls: any
+    galleryUrls: JsonValue
     verificationLevel: VerificationLevel
     upvoteCount: number
     viewCount: number
@@ -107,11 +109,11 @@ export function StartupProfileView({ startup }: StartupProfileViewProps) {
     .toUpperCase()
 
   const subCategories: string[] = Array.isArray(startup.subCategories)
-    ? startup.subCategories
+    ? (startup.subCategories as string[])
     : []
 
   const impactMetrics: { name: string; value: string; unit: string }[] =
-    Array.isArray(startup.impactMetrics) ? startup.impactMetrics : []
+    Array.isArray(startup.impactMetrics) ? (startup.impactMetrics as { name: string; value: string; unit: string }[]) : []
 
   const fieldTrialData = startup.fieldTrialData as {
     hasTrials?: boolean
@@ -133,9 +135,11 @@ export function StartupProfileView({ startup }: StartupProfileViewProps) {
                 {/* Logo / Initials */}
                 <div className="flex-shrink-0">
                   {startup.logoUrl ? (
-                    <img
+                    <Image
                       src={startup.logoUrl}
                       alt={startup.name}
+                      width={80}
+                      height={80}
                       className="h-20 w-20 rounded-xl object-cover"
                     />
                   ) : (
@@ -539,9 +543,11 @@ export function StartupProfileView({ startup }: StartupProfileViewProps) {
               </p>
               <div className="flex items-center gap-3">
                 {startup.founder.avatarUrl ? (
-                  <img
+                  <Image
                     src={startup.founder.avatarUrl}
                     alt={startup.founder.fullName}
+                    width={40}
+                    height={40}
                     className="h-10 w-10 rounded-full object-cover"
                   />
                 ) : (

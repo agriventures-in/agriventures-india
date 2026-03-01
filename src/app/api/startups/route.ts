@@ -134,6 +134,7 @@ export async function GET(req: NextRequest) {
     const skip = (page - 1) * limit
 
     // Build where clause
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const where: Record<string, any> = {
       status: { in: ["SUBMITTED", "UNDER_REVIEW", "VERIFIED"] },
     }

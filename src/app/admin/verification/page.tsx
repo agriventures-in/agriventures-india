@@ -38,9 +38,9 @@ function getStageLabel(value: string) {
 export default async function VerificationQueuePage() {
   const requests = await getVerificationRequests()
 
-  const pending = requests.filter((r: any) => r.status === "pending")
-  const approved = requests.filter((r: any) => r.status === "approved")
-  const rejected = requests.filter((r: any) => r.status === "rejected")
+  const pending = requests.filter((r) => r.status === "pending")
+  const approved = requests.filter((r) => r.status === "approved")
+  const rejected = requests.filter((r) => r.status === "rejected")
 
   return (
     <div className="space-y-6">
@@ -102,7 +102,7 @@ function VerificationList({
 
   return (
     <div className="space-y-3">
-      {requests.map((request: any) => (
+      {requests.map((request) => (
         <Card key={request.id}>
           <CardContent className="p-4">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">

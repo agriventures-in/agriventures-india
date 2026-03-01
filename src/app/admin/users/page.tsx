@@ -1,3 +1,4 @@
+import Image from "next/image"
 import { prisma } from "@/lib/prisma"
 import { Badge } from "@/components/ui/badge"
 import {
@@ -67,14 +68,16 @@ export default async function UsersManagementPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {users.map((user: any) => (
+                {users.map((user) => (
                   <TableRow key={user.id}>
                     <TableCell className="pl-4">
                       <div className="flex items-center gap-3">
                         {user.avatarUrl ? (
-                          <img
+                          <Image
                             src={user.avatarUrl}
                             alt={user.fullName}
+                            width={32}
+                            height={32}
                             className="h-8 w-8 rounded-full object-cover"
                           />
                         ) : (
