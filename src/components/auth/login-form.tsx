@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { signIn } from "next-auth/react"
 import { useForm } from "react-hook-form"
@@ -22,7 +22,6 @@ import { Separator } from "@/components/ui/separator"
 import { loginSchema, type LoginInput } from "@/lib/validations/auth"
 
 export function LoginForm() {
-  const router = useRouter()
   const searchParams = useSearchParams()
   const callbackUrl = searchParams.get("callbackUrl") ?? "/discover"
   const [isLoading, setIsLoading] = useState(false)
