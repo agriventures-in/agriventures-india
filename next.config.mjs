@@ -1,15 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  async redirects() {
-    return [
-      {
-        source: "/:path*",
-        has: [{ type: "host", value: "www.agriventures.in" }],
-        destination: "https://agriventures.in/:path*",
-        permanent: true,
-      },
-    ]
-  },
+  // Domain redirects (www ↔ non-www) are handled by Vercel's domain settings.
+  // Do NOT add redirects here — they clash with Vercel's edge-level redirects
+  // and cause ERR_TOO_MANY_REDIRECTS.
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "*.googleusercontent.com" },
