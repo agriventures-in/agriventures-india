@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect } from "react"
 import Image from "next/image"
 import type { JsonValue } from "@prisma/client/runtime/library"
 import { Badge } from "@/components/ui/badge"
@@ -91,6 +92,13 @@ export function StartupProfileView({ startup }: StartupProfileViewProps) {
   const { data: session } = useSession()
   const isLoggedIn = !!session?.user
   const isFounder = session?.user?.id === startup.founder.id
+
+  // Track startup view (fire once on mount)
+  useEffect(() => {
+    fetch(`/api/startups/${startup.id}/view`, { method: "POST" }).catch(() => {
+      // Silently fail — view tracking should never block the page
+    })
+  }, [startup.id])
 
   const categoryLabel =
     TECH_CATEGORIES.find((c) => c.value === startup.techCategory)?.label ||

@@ -116,7 +116,7 @@ export async function POST(
     // Check if startup exists and get founder info
     const startup = await prisma.startup.findUnique({
       where: { id: startupId },
-      select: { id: true, founderId: true, name: true },
+      select: { id: true, founderId: true, name: true, slug: true },
     })
 
     if (!startup) {
@@ -192,10 +192,10 @@ export async function POST(
     if (session.user.id !== startup.founderId) {
       createNotification(
         startup.founderId,
-        "comment",
+        "new_comment",
         "New Comment",
         `${session.user.name || "Someone"} commented on ${startup.name}`,
-        { startupId, commentId: comment.id }
+        { startupId, startupSlug: startup.slug, commentId: comment.id }
       ).catch(console.error)
     }
 

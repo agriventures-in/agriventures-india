@@ -121,7 +121,7 @@ export async function PATCH(
         notificationType,
         notificationTitle,
         notificationMessage,
-        { startupId: verificationRequest.startupId, status }
+        { startupId: verificationRequest.startupId, startupSlug: verificationRequest.startup.slug, status }
       ).catch(console.error)
     }
 

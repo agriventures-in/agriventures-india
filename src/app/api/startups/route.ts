@@ -107,7 +107,8 @@ export async function POST(req: NextRequest) {
       session.user.id,
       "startup_submitted",
       "Startup Submitted!",
-      `Your startup "${data.name}" has been submitted for review.`
+      `Your startup "${data.name}" has been submitted for review.`,
+      { startupId: startup.id, startupSlug: startup.slug }
     ).catch(console.error)
 
     return NextResponse.json(startup, { status: 201 })

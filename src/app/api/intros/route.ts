@@ -117,7 +117,7 @@ export async function POST(req: NextRequest) {
       "intro_request",
       "New Introduction Request",
       `${requester?.fullName || "Someone"} wants to connect regarding ${startup.name}`,
-      { introRequestId: introRequest.id, startupId }
+      { introRequestId: introRequest.id, startupId, startupSlug: startup.slug }
     ).catch(console.error)
 
     return NextResponse.json(introRequest, { status: 201 })
