@@ -521,85 +521,238 @@ export function ProfileView({ profile }: { profile: ProfileData }) {
       )}
 
       {/* Investor: Profile Details */}
-      {profile.role === "INVESTOR" && profile.investorProfile && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base flex items-center gap-2">
-              <TrendingUp className="h-5 w-5 text-emerald" />
-              Investor Profile
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {profile.investorProfile.firmName && (
+      {profile.role === "INVESTOR" && (
+        <InvestorProfileSection investorProfile={profile.investorProfile} />
+      )}
+    </div>
+  )
+}
+
+/* ─── Investor Profile Section with Edit ──────────────────────── */
+
+function InvestorProfileSection({
+  investorProfile,
+}: {
+  investorProfile: InvestorProfile | null
+}) {
+  const router = useRouter()
+  const [open, setOpen] = useState(false)
+  const [saving, setSaving] = useState(false)
+
+  const [firmName, setFirmName] = useState(investorProfile?.firmName ?? "")
+  const [thesis, setThesis] = useState(investorProfile?.thesis ?? "")
+  const [checkSizeMin, setCheckSizeMin] = useState(
+    investorProfile?.checkSizeMin?.toString() ?? ""
+  )
+  const [checkSizeMax, setCheckSizeMax] = useState(
+    investorProfile?.checkSizeMax?.toString() ?? ""
+  )
+  const [portfolioCount, setPortfolioCount] = useState(
+    investorProfile?.portfolioCount?.toString() ?? ""
+  )
+  const [websiteUrl, setWebsiteUrl] = useState(
+    investorProfile?.websiteUrl ?? ""
+  )
+
+  async function handleSave() {
+    setSaving(true)
+    try {
+      const body = {
+        firmName: firmName.trim() || null,
+        thesis: thesis.trim() || null,
+        checkSizeMin: checkSizeMin ? parseInt(checkSizeMin) : null,
+        checkSizeMax: checkSizeMax ? parseInt(checkSizeMax) : null,
+        portfolioCount: portfolioCount ? parseInt(portfolioCount) : null,
+        websiteUrl: websiteUrl.trim() || null,
+      }
+
+      const res = await fetch("/api/users/me/investor-profile", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      })
+
+      if (!res.ok) {
+        const data = await res.json()
+        throw new Error(data.message || "Failed to update")
+      }
+
+      toast.success("Investor profile updated!")
+      setOpen(false)
+      router.refresh()
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : "Something went wrong"
+      )
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const ip = investorProfile
+  const hasData = ip && (ip.firmName || ip.thesis || ip.checkSizeMin || ip.checkSizeMax)
+
+  return (
+    <Card>
+      <CardHeader>
+        <div className="flex items-center justify-between">
+          <CardTitle className="text-base flex items-center gap-2">
+            <TrendingUp className="h-5 w-5 text-emerald" />
+            Investor Profile
+          </CardTitle>
+          <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger asChild>
+              <Button size="sm" variant="outline">
+                <Pencil className="mr-1.5 h-3.5 w-3.5" />
+                {hasData ? "Edit" : "Set Up"}
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-lg">
+              <DialogHeader>
+                <DialogTitle>Investor Profile</DialogTitle>
+                <DialogDescription>
+                  Help founders understand your investment focus.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="space-y-4 py-2">
+                <div className="space-y-1.5">
+                  <label className="text-sm font-medium">Firm Name</label>
+                  <Input
+                    placeholder="e.g. Omnivore Partners"
+                    value={firmName}
+                    onChange={(e) => setFirmName(e.target.value)}
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-sm font-medium">Investment Thesis</label>
+                  <Textarea
+                    placeholder="What kind of startups do you invest in?"
+                    rows={3}
+                    value={thesis}
+                    onChange={(e) => setThesis(e.target.value)}
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="space-y-1.5">
+                    <label className="text-sm font-medium">Check Size Min (₹)</label>
+                    <Input
+                      type="number"
+                      placeholder="e.g. 2500000"
+                      value={checkSizeMin}
+                      onChange={(e) => setCheckSizeMin(e.target.value)}
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="text-sm font-medium">Check Size Max (₹)</label>
+                    <Input
+                      type="number"
+                      placeholder="e.g. 50000000"
+                      value={checkSizeMax}
+                      onChange={(e) => setCheckSizeMax(e.target.value)}
+                    />
+                  </div>
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-sm font-medium">Portfolio Companies</label>
+                  <Input
+                    type="number"
+                    placeholder="Number of companies invested in"
+                    value={portfolioCount}
+                    onChange={(e) => setPortfolioCount(e.target.value)}
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-sm font-medium">Website</label>
+                  <Input
+                    placeholder="https://yourfirm.com"
+                    value={websiteUrl}
+                    onChange={(e) => setWebsiteUrl(e.target.value)}
+                  />
+                </div>
+              </div>
+              <DialogFooter>
+                <Button variant="outline" onClick={() => setOpen(false)}>
+                  Cancel
+                </Button>
+                <Button
+                  onClick={handleSave}
+                  disabled={saving}
+                  className="bg-forest hover:bg-forest/90 text-white"
+                >
+                  {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                  Save Profile
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        </div>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        {!hasData ? (
+          <p className="text-sm text-muted-foreground">
+            Set up your investor profile so founders can understand your
+            investment focus and check size.
+          </p>
+        ) : (
+          <>
+            {ip.firmName && (
               <div>
                 <p className="text-sm font-medium text-muted-foreground">
                   Firm
                 </p>
-                <p className="text-foreground">
-                  {profile.investorProfile.firmName}
-                </p>
+                <p className="text-foreground">{ip.firmName}</p>
               </div>
             )}
-            {profile.investorProfile.thesis && (
+            {ip.thesis && (
               <div>
                 <p className="text-sm font-medium text-muted-foreground">
                   Investment Thesis
                 </p>
                 <p className="text-foreground/80 text-sm leading-relaxed">
-                  {profile.investorProfile.thesis}
+                  {ip.thesis}
                 </p>
               </div>
             )}
-            {(profile.investorProfile.checkSizeMin ||
-              profile.investorProfile.checkSizeMax) && (
+            {(ip.checkSizeMin || ip.checkSizeMax) && (
               <div>
                 <p className="text-sm font-medium text-muted-foreground">
                   Check Size
                 </p>
                 <p className="text-foreground">
-                  {profile.investorProfile.checkSizeMin
-                    ? `${(profile.investorProfile.checkSizeMin / 100000).toFixed(0)}L`
+                  {ip.checkSizeMin
+                    ? `₹${(ip.checkSizeMin / 100000).toFixed(0)}L`
                     : ""}
-                  {profile.investorProfile.checkSizeMin &&
-                  profile.investorProfile.checkSizeMax
-                    ? " - "
-                    : ""}
-                  {profile.investorProfile.checkSizeMax
-                    ? `${(profile.investorProfile.checkSizeMax / 100000).toFixed(0)}L`
+                  {ip.checkSizeMin && ip.checkSizeMax ? " - " : ""}
+                  {ip.checkSizeMax
+                    ? `₹${(ip.checkSizeMax / 100000).toFixed(0)}L`
                     : ""}
                 </p>
               </div>
             )}
-            {profile.investorProfile.portfolioCount != null &&
-              profile.investorProfile.portfolioCount > 0 && (
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground">
-                    Portfolio Companies
-                  </p>
-                  <p className="text-foreground">
-                    {profile.investorProfile.portfolioCount}
-                  </p>
-                </div>
-              )}
-            {profile.investorProfile.websiteUrl && (
+            {ip.portfolioCount != null && ip.portfolioCount > 0 && (
+              <div>
+                <p className="text-sm font-medium text-muted-foreground">
+                  Portfolio Companies
+                </p>
+                <p className="text-foreground">{ip.portfolioCount}</p>
+              </div>
+            )}
+            {ip.websiteUrl && (
               <div className="flex items-center gap-2 text-sm">
                 <Globe className="h-4 w-4 text-muted-foreground" />
                 <a
-                  href={profile.investorProfile.websiteUrl}
+                  href={ip.websiteUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-emerald hover:underline"
                 >
-                  {profile.investorProfile.websiteUrl.replace(
-                    /^https?:\/\//,
-                    ""
-                  )}
+                  {ip.websiteUrl.replace(/^https?:\/\//, "")}
                 </a>
               </div>
             )}
-          </CardContent>
-        </Card>
-      )}
-    </div>
+          </>
+        )}
+      </CardContent>
+    </Card>
   )
 }

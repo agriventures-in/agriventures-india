@@ -49,6 +49,7 @@ export type WizardFormData = {
   // Step 1: Basics
   name: string
   tagline: string
+  description: string
   state: string
   district: string
   foundedYear: number | undefined
@@ -86,6 +87,7 @@ export type WizardFormData = {
 const initialFormData: WizardFormData = {
   name: "",
   tagline: "",
+  description: "",
   state: "",
   district: "",
   foundedYear: undefined,
@@ -133,6 +135,7 @@ export function SubmitWizard() {
         return {
           name: formData.name,
           tagline: formData.tagline,
+          description: formData.description || undefined,
           state: formData.state,
           district: formData.district || undefined,
           foundedYear: formData.foundedYear,

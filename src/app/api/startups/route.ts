@@ -47,6 +47,7 @@ export async function POST(req: NextRequest) {
           name: data.name,
           slug,
           tagline: data.tagline,
+          description: data.description || null,
           state: data.state,
           district: data.district || null,
           foundedYear: data.foundedYear || null,

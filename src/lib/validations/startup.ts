@@ -10,6 +10,11 @@ export const startupBasicsSchema = z.object({
     .string()
     .min(10, "Tagline must be at least 10 characters")
     .max(150, "Tagline must be at most 150 characters"),
+  description: z
+    .string()
+    .max(2000, "Description must be at most 2000 characters")
+    .optional()
+    .or(z.literal("")),
   state: z.string().min(1, "Please select a state"),
   district: z.string().optional(),
   foundedYear: z

@@ -1,6 +1,7 @@
 "use client"
 
 import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import {
   Select,
@@ -56,6 +57,24 @@ export function StepBasics({ formData, updateFormData, errors }: StepBasicsProps
         {errors.tagline && (
           <p className="text-sm text-destructive">{errors.tagline}</p>
         )}
+      </div>
+
+      {/* Description */}
+      <div className="space-y-2">
+        <Label htmlFor="description">
+          About Your Startup{" "}
+          <span className="text-muted-foreground font-normal">(optional)</span>
+        </Label>
+        <Textarea
+          id="description"
+          placeholder="Tell us more about your startup — what you do, who you serve, and what makes you unique. This appears on your public profile."
+          rows={4}
+          value={formData.description}
+          onChange={(e) => updateFormData({ description: e.target.value })}
+        />
+        <p className="text-xs text-muted-foreground">
+          {formData.description.length}/2000 characters
+        </p>
       </div>
 
       {/* State */}

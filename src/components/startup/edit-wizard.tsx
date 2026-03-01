@@ -153,6 +153,7 @@ function convertStartupToFormData(startup: StartupData): WizardFormData {
   return {
     name: startup.name,
     tagline: startup.tagline,
+    description: startup.description || "",
     state: startup.state || "",
     district: startup.district || "",
     foundedYear: startup.foundedYear || undefined,
