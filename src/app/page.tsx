@@ -435,6 +435,57 @@ export default function HomePage() {
             </div>
           </div>
         </section>
+
+        {/* ===================== BUILT WITH CLAUDE ===================== */}
+        <section className="border-t bg-muted/30 py-8">
+          <div className="container mx-auto px-4">
+            <div className="flex flex-col items-center justify-center gap-3 text-center">
+              <div className="flex items-center gap-2.5 rounded-full border border-border/60 bg-white px-5 py-2.5 shadow-sm">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="text-[#D97706]"
+                >
+                  <path
+                    d="M15.788 3.214c-.492-1.619-2.784-1.619-3.276 0l-1.12 3.682a1.72 1.72 0 0 1-1.082 1.082L6.628 9.098c-1.619.492-1.619 2.784 0 3.276l3.682 1.12a1.72 1.72 0 0 1 1.082 1.082l1.12 3.682c.492 1.619 2.784 1.619 3.276 0l1.12-3.682a1.72 1.72 0 0 1 1.082-1.082l3.682-1.12c1.619-.492 1.619-2.784 0-3.276l-3.682-1.12a1.72 1.72 0 0 1-1.082-1.082l-1.12-3.682Z"
+                    fill="currentColor"
+                  />
+                  <path
+                    d="M6.5 2.5c-.2-.8-1.3-.8-1.5 0l-.4 1.3a.8.8 0 0 1-.5.5l-1.3.4c-.8.2-.8 1.3 0 1.5l1.3.4a.8.8 0 0 1 .5.5l.4 1.3c.2.8 1.3.8 1.5 0l.4-1.3a.8.8 0 0 1 .5-.5l1.3-.4c.8-.2.8-1.3 0-1.5l-1.3-.4a.8.8 0 0 1-.5-.5l-.4-1.3Z"
+                    fill="currentColor"
+                    opacity="0.6"
+                  />
+                </svg>
+                <span className="text-sm font-medium text-foreground/80">
+                  Built with{" "}
+                  <a
+                    href="https://claude.ai"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-semibold text-[#D97706] hover:underline"
+                  >
+                    Claude
+                  </a>
+                  {" "}by{" "}
+                  <a
+                    href="https://anthropic.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-semibold text-foreground hover:underline"
+                  >
+                    Anthropic
+                  </a>
+                </span>
+              </div>
+              <p className="text-xs text-muted-foreground">
+                AI-powered development from architecture to deployment
+              </p>
+            </div>
+          </div>
+        </section>
       </main>
 
       <Footer />

@@ -129,10 +129,32 @@ export function Footer() {
         {/* Bottom bar */}
         <div className="mt-12 border-t border-white/10 pt-6">
           <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-            <p className="text-xs text-white/50">
-              &copy; {new Date().getFullYear()} AgriVentures India. All rights
-              reserved.
-            </p>
+            <div className="flex flex-col items-center gap-1 md:items-start">
+              <p className="text-xs text-white/50">
+                &copy; {new Date().getFullYear()} AgriVentures India. All rights
+                reserved.
+              </p>
+              <p className="text-xs text-white/40">
+                Built with{" "}
+                <a
+                  href="https://claude.ai"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#F59E0B]/70 hover:text-[#F59E0B]"
+                >
+                  Claude
+                </a>
+                {" "}by{" "}
+                <a
+                  href="https://anthropic.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white/60 hover:text-white/80"
+                >
+                  Anthropic
+                </a>
+              </p>
+            </div>
             <div className="flex items-center gap-6">
               <Link
                 href="/terms"
