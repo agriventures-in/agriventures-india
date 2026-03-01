@@ -3,7 +3,8 @@ import { getServerSession } from "next-auth"
 import { z } from "zod"
 import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
-import { createNotification } from "@/lib/email"
+import { sendEmail, createNotification } from "@/lib/email"
+import { newCommentEmail } from "@/lib/email-templates"
 
 const createCommentSchema = z.object({
   content: z
@@ -116,7 +117,7 @@ export async function POST(
     // Check if startup exists and get founder info
     const startup = await prisma.startup.findUnique({
       where: { id: startupId },
-      select: { id: true, founderId: true, name: true, slug: true },
+      select: { id: true, founderId: true, name: true, slug: true, founder: { select: { fullName: true, email: true } } },
     })
 
     if (!startup) {
@@ -190,12 +191,30 @@ export async function POST(
 
     // Notify startup founder (if commenter is not the founder)
     if (session.user.id !== startup.founderId) {
+      const commenterName = session.user.name || "Someone"
+      const baseUrl = process.env.NEXTAUTH_URL || "https://agriventures.in"
+      const startupUrl = `${baseUrl}/startups/${startup.slug}`
+
+      // In-app notification
       createNotification(
         startup.founderId,
         "new_comment",
         "New Comment",
-        `${session.user.name || "Someone"} commented on ${startup.name}`,
+        `${commenterName} commented on ${startup.name}`,
         { startupId, startupSlug: startup.slug, commentId: comment.id }
+      ).catch(console.error)
+
+      // Email notification
+      sendEmail(
+        startup.founder.email,
+        `New comment on ${startup.name}`,
+        newCommentEmail(
+          startup.founder.fullName,
+          commenterName,
+          startup.name,
+          content,
+          startupUrl
+        )
       ).catch(console.error)
     }
 

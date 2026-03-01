@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
+import { sendEmail, createNotification } from "@/lib/email"
+import { statusChangeEmail } from "@/lib/email-templates"
 
 export async function GET(
   req: NextRequest,
@@ -57,7 +59,7 @@ export async function PATCH(
 
     const startup = await prisma.startup.findUnique({
       where: { id: params.id },
-      select: { founderId: true },
+      select: { founderId: true, name: true, slug: true, status: true, founder: { select: { fullName: true, email: true } } },
     })
 
     if (!startup) {
@@ -127,6 +129,31 @@ export async function PATCH(
         },
       },
     })
+
+    // If admin changed the status, notify the founder via email + in-app
+    if (isAdmin && body.status && body.status !== startup.status) {
+      const baseUrl = process.env.NEXTAUTH_URL || "https://agriventures.in"
+      const startupUrl = `${baseUrl}/startups/${startup.slug}`
+
+      createNotification(
+        startup.founderId,
+        "status_change",
+        `Startup ${body.status === "VERIFIED" ? "Verified!" : "Status Updated"}`,
+        `Your startup "${startup.name}" status has been updated to ${body.status.replace(/_/g, " ")}.`,
+        { startupId: params.id, startupSlug: startup.slug, status: body.status }
+      ).catch(console.error)
+
+      sendEmail(
+        startup.founder.email,
+        `${startup.name} — Status Updated`,
+        statusChangeEmail(
+          startup.founder.fullName,
+          startup.name,
+          body.status,
+          startupUrl
+        )
+      ).catch(console.error)
+    }
 
     return NextResponse.json(updated)
   } catch (error) {

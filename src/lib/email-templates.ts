@@ -257,6 +257,106 @@ export function passwordResetEmail(userName: string, resetUrl: string): string {
   `)
 }
 
+/** New comment notification email for startup founders. */
+export function newCommentEmail(
+  founderName: string,
+  commenterName: string,
+  startupName: string,
+  commentText: string,
+  startupUrl: string
+): string {
+  return layout(`
+    <h2 style="margin:0 0 16px;color:#111827;font-size:20px;font-weight:600;">
+      New Comment on ${escapeHtml(startupName)}
+    </h2>
+    <p style="margin:0 0 12px;color:#374151;font-size:15px;line-height:1.6;">
+      Hi ${escapeHtml(founderName)},
+    </p>
+    <p style="margin:0 0 16px;color:#374151;font-size:15px;line-height:1.6;">
+      <strong>${escapeHtml(commenterName)}</strong> left a comment on your startup:
+    </p>
+    <div style="margin:0 0 20px;padding:16px;background-color:#f9fafb;border-left:4px solid ${BRAND_COLOR};border-radius:4px;">
+      <p style="margin:0;color:#374151;font-size:14px;line-height:1.6;font-style:italic;">
+        "${escapeHtml(commentText.length > 300 ? commentText.substring(0, 300) + "..." : commentText)}"
+      </p>
+    </div>
+    <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 0 20px;">
+      <tr>
+        <td style="border-radius:8px;background-color:${BRAND_COLOR};">
+          <a href="${startupUrl}" target="_blank" style="display:inline-block;padding:12px 28px;color:#ffffff;font-size:15px;font-weight:600;text-decoration:none;border-radius:8px;">
+            View Comment
+          </a>
+        </td>
+      </tr>
+    </table>
+  `)
+}
+
+/** Startup status change notification email. */
+export function statusChangeEmail(
+  founderName: string,
+  startupName: string,
+  newStatus: string,
+  startupUrl: string
+): string {
+  const statusMessages: Record<string, { title: string; message: string; color: string }> = {
+    VERIFIED: {
+      title: "Your Startup Has Been Verified!",
+      message: "Congratulations! Your startup has been reviewed and verified by our team. It now appears with a verified badge on the platform.",
+      color: "#16A34A",
+    },
+    UNDER_REVIEW: {
+      title: "Your Startup Is Under Review",
+      message: "Our team has started reviewing your startup submission. We will notify you once the review is complete.",
+      color: "#F59E0B",
+    },
+    REJECTED: {
+      title: "Startup Review Update",
+      message: "After careful review, we were unable to verify your startup at this time. You may update your listing and resubmit for review.",
+      color: "#EF4444",
+    },
+    SUBMITTED: {
+      title: "Startup Submitted for Review",
+      message: "Your startup has been submitted and is in the queue for review. We will notify you of any updates.",
+      color: "#3B82F6",
+    },
+  }
+
+  const info = statusMessages[newStatus] || {
+    title: "Startup Status Updated",
+    message: `Your startup status has been updated to ${newStatus}.`,
+    color: BRAND_COLOR,
+  }
+
+  return layout(`
+    <h2 style="margin:0 0 16px;color:#111827;font-size:20px;font-weight:600;">
+      ${info.title}
+    </h2>
+    <p style="margin:0 0 12px;color:#374151;font-size:15px;line-height:1.6;">
+      Hi ${escapeHtml(founderName)},
+    </p>
+    <p style="margin:0 0 16px;color:#374151;font-size:15px;line-height:1.6;">
+      ${info.message}
+    </p>
+    <div style="margin:0 0 20px;padding:12px 16px;background-color:#f9fafb;border-radius:8px;display:inline-block;">
+      <span style="font-size:14px;color:#6b7280;">Status: </span>
+      <span style="font-size:14px;font-weight:600;color:${info.color};">
+        ${escapeHtml(newStatus.replace(/_/g, " "))}
+      </span>
+    </div>
+    <br/>
+    <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 0 20px;">
+      <tr>
+        <td style="border-radius:8px;background-color:${BRAND_COLOR};">
+          <a href="${startupUrl}" target="_blank" style="display:inline-block;padding:12px 28px;color:#ffffff;font-size:15px;font-weight:600;text-decoration:none;border-radius:8px;">
+            View Startup
+          </a>
+        </td>
+      </tr>
+    </table>
+  `)
+}
+
 /** Escape HTML special characters to prevent XSS in email content. */
 function escapeHtml(str: string): string {
   return str
