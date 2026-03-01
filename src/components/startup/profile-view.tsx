@@ -136,7 +136,7 @@ export function StartupProfileView({ startup }: StartupProfileViewProps) {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
-      <div className="grid gap-8 lg:grid-cols-[1fr_320px]">
+      <div className="grid gap-6 md:gap-8 lg:grid-cols-[1fr_320px]">
         {/* Main Content */}
         <div className="space-y-6">
           {/* Hero Section */}
@@ -225,7 +225,7 @@ export function StartupProfileView({ startup }: StartupProfileViewProps) {
                         {startup.viewCount} views
                       </span>
                     </div>
-                    <div className="ml-auto flex items-center gap-2">
+                    <div className="flex items-center gap-2 sm:ml-auto">
                       {isFounder && (
                         <Button asChild size="sm" variant="outline" className="gap-1.5">
                           <Link href={`/dashboard/startups/${startup.id}/edit`}>
@@ -247,14 +247,14 @@ export function StartupProfileView({ startup }: StartupProfileViewProps) {
 
           {/* Tabs */}
           <Tabs defaultValue="about" className="w-full">
-            <TabsList className="w-full justify-start">
-              <TabsTrigger value="about">About</TabsTrigger>
-              <TabsTrigger value="impact">Impact</TabsTrigger>
-              <TabsTrigger value="evidence">Evidence</TabsTrigger>
-              <TabsTrigger value="team">Team</TabsTrigger>
-              <TabsTrigger value="gallery">Gallery</TabsTrigger>
-              <TabsTrigger value="funding">Funding</TabsTrigger>
-              <TabsTrigger value="comments">
+            <TabsList className="w-full justify-start overflow-x-auto overflow-y-hidden">
+              <TabsTrigger value="about" className="shrink-0">About</TabsTrigger>
+              <TabsTrigger value="impact" className="shrink-0">Impact</TabsTrigger>
+              <TabsTrigger value="evidence" className="shrink-0">Evidence</TabsTrigger>
+              <TabsTrigger value="team" className="shrink-0">Team</TabsTrigger>
+              <TabsTrigger value="gallery" className="shrink-0">Gallery</TabsTrigger>
+              <TabsTrigger value="funding" className="shrink-0">Funding</TabsTrigger>
+              <TabsTrigger value="comments" className="shrink-0">
                 Comments ({startup._count.comments})
               </TabsTrigger>
             </TabsList>

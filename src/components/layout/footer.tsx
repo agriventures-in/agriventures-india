@@ -45,7 +45,7 @@ export function Footer() {
         </div>
 
         {/* 4-column grid */}
-        <div className="grid grid-cols-2 gap-8 md:grid-cols-4 md:gap-12">
+        <div className="grid grid-cols-2 gap-6 sm:gap-8 md:grid-cols-4 md:gap-12">
           <div>
             <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-lime">
               Platform

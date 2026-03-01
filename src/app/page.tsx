@@ -125,7 +125,7 @@ export default function HomePage() {
                 India&apos;s Verified Agritech Platform
               </Badge>
 
-              <h1 className="text-4xl font-bold leading-tight tracking-tight text-forest sm:text-5xl md:text-6xl lg:text-7xl">
+              <h1 className="text-3xl font-bold leading-tight tracking-tight text-forest sm:text-4xl md:text-5xl lg:text-6xl">
                 Making India&apos;s Invisible{" "}
                 <span className="bg-gradient-to-r from-emerald to-lime bg-clip-text text-transparent">
                   Agritech Founders
@@ -162,9 +162,9 @@ export default function HomePage() {
               </div>
 
               {/* Stats */}
-              <div className="mx-auto mt-14 flex max-w-lg items-center justify-center gap-8 sm:gap-12">
+              <div className="mx-auto mt-14 flex max-w-lg items-center justify-center gap-4 sm:gap-8 md:gap-12">
                 {HERO_STATS.map((stat, idx) => (
-                  <div key={stat.label} className="flex items-center gap-8 sm:gap-12">
+                  <div key={stat.label} className="flex items-center gap-4 sm:gap-8 md:gap-12">
                     {idx > 0 && (
                       <div className="h-10 w-px bg-border" />
                     )}

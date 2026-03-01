@@ -54,7 +54,7 @@ export function MobileNav() {
           <span className="sr-only">Open menu</span>
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" className="w-[300px] sm:w-[360px]">
+      <SheetContent side="left" className="w-[280px] sm:w-[360px]">
         <SheetHeader>
           <SheetTitle className="flex items-center gap-2">
             <ShieldCheck className="h-5 w-5 text-forest" />

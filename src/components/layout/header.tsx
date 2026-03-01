@@ -54,7 +54,7 @@ export function Header() {
     >
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         {/* Left: Logo + Nav */}
-        <div className="flex items-center gap-8">
+        <div className="flex items-center gap-4 md:gap-8">
           {/* Mobile hamburger */}
           <MobileNav />
 

@@ -33,10 +33,10 @@ export function FilterBar({
   const hasFilters = category || stage || state
 
   return (
-    <div className="flex flex-wrap items-center gap-3">
+    <div className="grid grid-cols-1 gap-3 sm:flex sm:flex-wrap sm:items-center">
       {/* Category */}
       <Select value={category} onValueChange={onCategoryChange}>
-        <SelectTrigger className="w-[180px]">
+        <SelectTrigger className="w-full sm:w-[180px]">
           <SelectValue placeholder="All Categories" />
         </SelectTrigger>
         <SelectContent>
@@ -50,7 +50,7 @@ export function FilterBar({
 
       {/* Stage */}
       <Select value={stage} onValueChange={onStageChange}>
-        <SelectTrigger className="w-[180px]">
+        <SelectTrigger className="w-full sm:w-[180px]">
           <SelectValue placeholder="All Stages" />
         </SelectTrigger>
         <SelectContent>
@@ -64,7 +64,7 @@ export function FilterBar({
 
       {/* State */}
       <Select value={state} onValueChange={onStateChange}>
-        <SelectTrigger className="w-[180px]">
+        <SelectTrigger className="w-full sm:w-[180px]">
           <SelectValue placeholder="All States" />
         </SelectTrigger>
         <SelectContent>
