@@ -2,8 +2,10 @@
 
 import { useEffect } from "react"
 import Image from "next/image"
+import Link from "next/link"
 import type { JsonValue } from "@prisma/client/runtime/library"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -13,6 +15,7 @@ import {
   Globe,
   MapPin,
   MessageSquare,
+  Pencil,
   Users,
   Briefcase,
   Eye,
@@ -222,7 +225,15 @@ export function StartupProfileView({ startup }: StartupProfileViewProps) {
                         {startup.viewCount} views
                       </span>
                     </div>
-                    <div className="ml-auto">
+                    <div className="ml-auto flex items-center gap-2">
+                      {isFounder && (
+                        <Button asChild size="sm" variant="outline" className="gap-1.5">
+                          <Link href={`/dashboard/startups/${startup.id}/edit`}>
+                            <Pencil className="h-3.5 w-3.5" />
+                            Edit
+                          </Link>
+                        </Button>
+                      )}
                       <ShareButtons
                         startupName={startup.name}
                         startupSlug={startup.slug}

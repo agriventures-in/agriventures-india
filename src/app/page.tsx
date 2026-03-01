@@ -413,7 +413,7 @@ export default function HomePage() {
                 place for you here.
               </p>
               <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
-                <Link href="/auth/signup">
+                <Link href="/register">
                   <Button
                     size="lg"
                     className="w-full gap-2 bg-white text-forest shadow-lg hover:bg-white/90 sm:w-auto"

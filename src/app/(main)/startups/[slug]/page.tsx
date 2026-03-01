@@ -106,15 +106,8 @@ export default async function StartupPage({ params }: StartupPageProps) {
     notFound()
   }
 
-  // Increment view count (fire and forget)
-  prisma.startup
-    .update({
-      where: { id: startup.id },
-      data: { viewCount: { increment: 1 } },
-    })
-    .catch(() => {
-      // Silently ignore errors for view count increment
-    })
+  // View tracking is handled client-side via useEffect in StartupProfileView
+  // which calls POST /api/startups/[id]/view (creates StartupView record + increments viewCount)
 
   return (
     <div className="min-h-screen bg-background">

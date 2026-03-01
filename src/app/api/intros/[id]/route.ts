@@ -118,7 +118,7 @@ export async function PATCH(
       "intro_response",
       `Introduction ${status === "ACCEPTED" ? "Accepted" : "Declined"}`,
       `${introRequest.toUser.fullName} has ${status.toLowerCase()} your introduction request for ${introRequest.startup.name}`,
-      { introRequestId: id, startupId: introRequest.startupId, status }
+      { introRequestId: id, startupId: introRequest.startupId, startupSlug: updated.startup.slug, status }
     ).catch(console.error)
 
     return NextResponse.json(updated)

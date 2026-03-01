@@ -1,5 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  async redirects() {
+    return [
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "www.agriventures.in" }],
+        destination: "https://agriventures.in/:path*",
+        permanent: true,
+      },
+    ]
+  },
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "*.googleusercontent.com" },

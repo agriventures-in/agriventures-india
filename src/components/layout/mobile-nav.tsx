@@ -136,6 +136,19 @@ export function MobileNav() {
                   Profile
                 </Link>
               </SheetClose>
+              {["FOUNDER", "ADMIN"].includes(
+                (session.user as { role?: string }).role || ""
+              ) && (
+                <SheetClose asChild>
+                  <Link
+                    href="/dashboard"
+                    className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-foreground/80 transition-colors hover:bg-accent hover:text-foreground"
+                  >
+                    <LayoutDashboard className="h-4 w-4" />
+                    Dashboard
+                  </Link>
+                </SheetClose>
+              )}
               {(session.user as { role?: string }).role === "FOUNDER" && (
                 <SheetClose asChild>
                   <Link
@@ -147,9 +160,7 @@ export function MobileNav() {
                   </Link>
                 </SheetClose>
               )}
-              {["ADMIN", "INVESTOR"].includes(
-                (session.user as { role?: string }).role || ""
-              ) && (
+              {(session.user as { role?: string }).role === "INVESTOR" && (
                 <SheetClose asChild>
                   <Link
                     href="/dashboard"
@@ -172,7 +183,7 @@ export function MobileNav() {
           ) : (
             <>
               <SheetClose asChild>
-                <Link href="/auth/signin">
+                <Link href="/login">
                   <Button variant="outline" className="w-full gap-2">
                     <LogIn className="h-4 w-4" />
                     Log In
@@ -180,7 +191,7 @@ export function MobileNav() {
                 </Link>
               </SheetClose>
               <SheetClose asChild>
-                <Link href="/auth/signup">
+                <Link href="/register">
                   <Button className="w-full gap-2 bg-forest hover:bg-forest/90">
                     <UserPlus className="h-4 w-4" />
                     Join Community

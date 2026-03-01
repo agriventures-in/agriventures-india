@@ -26,13 +26,19 @@ export async function POST(
     const session = await getServerSession(authOptions)
     const userId = session?.user?.id || null
 
-    // Record view
-    await prisma.startupView.create({
-      data: {
-        startupId,
-        userId,
-      },
-    })
+    // Record view + increment aggregate counter in parallel
+    await Promise.all([
+      prisma.startupView.create({
+        data: {
+          startupId,
+          userId,
+        },
+      }),
+      prisma.startup.update({
+        where: { id: startupId },
+        data: { viewCount: { increment: 1 } },
+      }),
+    ])
 
     return NextResponse.json({ success: true })
   } catch (error) {

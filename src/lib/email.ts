@@ -11,7 +11,7 @@ function getResend(): Resend | null {
 }
 
 const FROM_EMAIL =
-  process.env.FROM_EMAIL || "AgriVentures India <onboarding@resend.dev>"
+  process.env.FROM_EMAIL || "AgriVentures India <noreply@agriventures.in>"
 
 /**
  * Send an email via Resend.

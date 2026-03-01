@@ -168,6 +168,17 @@ export function Header() {
                     Profile
                   </Link>
                 </DropdownMenuItem>
+                {(userRole === "FOUNDER" || userRole === "ADMIN") && (
+                  <DropdownMenuItem asChild>
+                    <Link
+                      href="/dashboard"
+                      className="flex items-center gap-2"
+                    >
+                      <LayoutDashboard className="h-4 w-4" />
+                      Dashboard
+                    </Link>
+                  </DropdownMenuItem>
+                )}
                 {userRole === "FOUNDER" && (
                   <DropdownMenuItem asChild>
                     <Link
@@ -179,7 +190,7 @@ export function Header() {
                     </Link>
                   </DropdownMenuItem>
                 )}
-                {(userRole === "ADMIN" || userRole === "INVESTOR") && (
+                {userRole === "INVESTOR" && (
                   <DropdownMenuItem asChild>
                     <Link
                       href="/dashboard"
@@ -214,12 +225,12 @@ export function Header() {
             </>
           ) : (
             <div className="flex items-center gap-2">
-              <Link href="/auth/signin">
+              <Link href="/login">
                 <Button variant="ghost" size="sm" className="hidden sm:flex">
                   {t("nav.login")}
                 </Button>
               </Link>
-              <Link href="/auth/signup">
+              <Link href="/register">
                 <Button
                   size="sm"
                   className="bg-forest hover:bg-forest/90 text-white"

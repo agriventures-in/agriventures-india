@@ -77,7 +77,7 @@ export function CTASection() {
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5, delay: 0.3 }}
           >
-            <Link href="/auth/signup">
+            <Link href="/register">
               <Button
                 size="lg"
                 className="w-full gap-2 bg-white text-[#0A4A23] shadow-lg transition-transform hover:scale-105 hover:bg-white/95 sm:w-auto"
