@@ -162,6 +162,8 @@ export default async function StartupsManagementPage({
                       <StartupActions
                         startupId={startup.id}
                         startupSlug={startup.slug}
+                        currentStatus={startup.status}
+                        currentVerification={startup.verificationLevel}
                         isFeatured={startup.isFeatured}
                       />
                     </TableCell>

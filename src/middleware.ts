@@ -61,6 +61,8 @@ export default withAuth(
         if (pathname.startsWith("/startups") && pathname !== "/startups/submit") return true
         if (pathname.startsWith("/knowledge/")) return true
         if (pathname.startsWith("/jobs/")) return true
+        if (pathname === "/forgot-password") return true
+        if (pathname.startsWith("/reset-password")) return true
 
         // All other routes require authentication
         return !!token

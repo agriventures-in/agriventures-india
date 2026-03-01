@@ -102,8 +102,8 @@ export function RegisterForm() {
         return
       }
 
-      router.push("/discover")
-      router.refresh()
+      // Full page navigation ensures session cookie is picked up reliably
+      window.location.href = "/discover"
     } catch {
       toast.error("Something went wrong. Please try again.")
     } finally {

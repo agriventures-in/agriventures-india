@@ -24,10 +24,10 @@ const COMPANY_LINKS = [
 ]
 
 const CONNECT_LINKS = [
-  { href: "https://twitter.com/agriventures", label: "Twitter / X" },
-  { href: "https://linkedin.com/company/agriventures", label: "LinkedIn" },
-  { href: "https://chat.whatsapp.com/agriventures", label: "WhatsApp Community" },
-  { href: "/newsletter", label: "Newsletter" },
+  { href: "https://x.com/agriventures_Inx", label: "Twitter / X" },
+  { href: "https://www.linkedin.com/company/agriventures-india/", label: "LinkedIn" },
+  { href: "https://www.instagram.com/agriventures.in/", label: "Instagram" },
+  { href: "https://chat.whatsapp.com/Jpu0sU3qsLP3oVCX2ZrqXy", label: "WhatsApp Community" },
 ]
 
 export function Footer() {

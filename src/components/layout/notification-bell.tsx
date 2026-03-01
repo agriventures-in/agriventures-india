@@ -1,6 +1,7 @@
 "use client"
 
 import { useCallback, useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
 import {
   Bell,
   CheckCheck,
@@ -9,6 +10,8 @@ import {
   UserPlus,
   MessageSquare,
   Info,
+  ThumbsUp,
+  ArrowRight,
 } from "lucide-react"
 import { formatDistanceToNow } from "date-fns"
 import { Button } from "@/components/ui/button"
@@ -26,6 +29,7 @@ interface Notification {
   title: string
   message: string
   isRead: boolean
+  metadata: Record<string, string> | null
   createdAt: string
 }
 
@@ -38,16 +42,41 @@ interface NotificationsResponse {
 const NOTIFICATION_ICONS: Record<string, typeof Bell> = {
   welcome: UserPlus,
   startup_submitted: Rocket,
+  startup_verified: ShieldCheck,
   verification_approved: ShieldCheck,
   verification_rejected: ShieldCheck,
   verification_update: ShieldCheck,
   intro_request: MessageSquare,
   intro_response: MessageSquare,
+  new_upvote: ThumbsUp,
+  new_comment: MessageSquare,
+}
+
+function getNotificationLink(notification: Notification): string | null {
+  const meta = notification.metadata
+  switch (notification.type) {
+    case "startup_submitted":
+    case "startup_verified":
+    case "verification_approved":
+    case "verification_rejected":
+      return meta?.startupSlug ? `/startups/${meta.startupSlug}` : null
+    case "new_upvote":
+    case "new_comment":
+      return meta?.startupSlug ? `/startups/${meta.startupSlug}` : null
+    case "intro_request":
+    case "intro_response":
+      return "/intros"
+    case "welcome":
+      return "/discover"
+    default:
+      return null
+  }
 }
 
 const POLL_INTERVAL = 30_000 // 30 seconds
 
 export function NotificationBell() {
+  const router = useRouter()
   const [notifications, setNotifications] = useState<Notification[]>([])
   const [unreadCount, setUnreadCount] = useState(0)
   const [isOpen, setIsOpen] = useState(false)
@@ -184,6 +213,11 @@ export function NotificationBell() {
                     if (!notification.isRead) {
                       markAsRead(notification.id)
                     }
+                    const link = getNotificationLink(notification)
+                    if (link) {
+                      setIsOpen(false)
+                      router.push(link)
+                    }
                   }}
                 >
                   <div className="mt-0.5">{getIcon(notification.type)}</div>
@@ -205,9 +239,14 @@ export function NotificationBell() {
                     <p className="mt-0.5 line-clamp-2 text-xs text-muted-foreground">
                       {notification.message}
                     </p>
-                    <p className="mt-1 text-[11px] text-muted-foreground/60">
-                      {formatTime(notification.createdAt)}
-                    </p>
+                    <div className="mt-1 flex items-center justify-between">
+                      <span className="text-[11px] text-muted-foreground/60">
+                        {formatTime(notification.createdAt)}
+                      </span>
+                      {getNotificationLink(notification) && (
+                        <ArrowRight className="h-3 w-3 text-muted-foreground/40" />
+                      )}
+                    </div>
                   </div>
                 </button>
               ))}

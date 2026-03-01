@@ -53,8 +53,8 @@ export function LoginForm() {
       }
 
       toast.success("Welcome back!")
-      router.push(callbackUrl)
-      router.refresh()
+      // Full page navigation ensures session cookie is picked up reliably
+      window.location.href = callbackUrl
     } catch {
       toast.error("Something went wrong. Please try again.")
     } finally {
