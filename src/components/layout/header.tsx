@@ -180,15 +180,26 @@ export function Header() {
                   </DropdownMenuItem>
                 )}
                 {userRole === "FOUNDER" && (
-                  <DropdownMenuItem asChild>
-                    <Link
-                      href="/dashboard/startups"
-                      className="flex items-center gap-2"
-                    >
-                      <Rocket className="h-4 w-4" />
-                      My Startups
-                    </Link>
-                  </DropdownMenuItem>
+                  <>
+                    <DropdownMenuItem asChild>
+                      <Link
+                        href="/dashboard/startups"
+                        className="flex items-center gap-2"
+                      >
+                        <Rocket className="h-4 w-4" />
+                        My Startups
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link
+                        href="/dashboard/jobs"
+                        className="flex items-center gap-2"
+                      >
+                        <Briefcase className="h-4 w-4" />
+                        My Jobs
+                      </Link>
+                    </DropdownMenuItem>
+                  </>
                 )}
                 {userRole === "INVESTOR" && (
                   <DropdownMenuItem asChild>

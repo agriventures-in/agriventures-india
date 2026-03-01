@@ -150,15 +150,26 @@ export function MobileNav() {
                 </SheetClose>
               )}
               {(session.user as { role?: string }).role === "FOUNDER" && (
-                <SheetClose asChild>
-                  <Link
-                    href="/dashboard/startups"
-                    className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-foreground/80 transition-colors hover:bg-accent hover:text-foreground"
-                  >
-                    <Rocket className="h-4 w-4" />
-                    My Startups
-                  </Link>
-                </SheetClose>
+                <>
+                  <SheetClose asChild>
+                    <Link
+                      href="/dashboard/startups"
+                      className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-foreground/80 transition-colors hover:bg-accent hover:text-foreground"
+                    >
+                      <Rocket className="h-4 w-4" />
+                      My Startups
+                    </Link>
+                  </SheetClose>
+                  <SheetClose asChild>
+                    <Link
+                      href="/dashboard/jobs"
+                      className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-foreground/80 transition-colors hover:bg-accent hover:text-foreground"
+                    >
+                      <Briefcase className="h-4 w-4" />
+                      My Jobs
+                    </Link>
+                  </SheetClose>
+                </>
               )}
               {(session.user as { role?: string }).role === "INVESTOR" && (
                 <SheetClose asChild>

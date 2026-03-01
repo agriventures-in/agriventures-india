@@ -454,7 +454,7 @@ export function ProfileView({ profile }: { profile: ProfileData }) {
               <Rocket className="h-5 w-5 text-emerald" />
               My Startups
             </h3>
-            <Link href="/dashboard/startups/new">
+            <Link href="/startups/submit">
               <Button size="sm" variant="outline">
                 Add Startup
               </Button>
@@ -471,7 +471,7 @@ export function ProfileView({ profile }: { profile: ProfileData }) {
                 <p className="mt-1 text-sm text-muted-foreground">
                   Register your agritech startup to get visibility
                 </p>
-                <Link href="/dashboard/startups/new">
+                <Link href="/startups/submit">
                   <Button className="mt-4 bg-forest hover:bg-forest/90 text-white" size="sm">
                     Register Startup
                   </Button>

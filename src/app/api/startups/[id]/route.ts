@@ -175,20 +175,23 @@ export async function DELETE(
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 })
     }
 
-    // Only admin can delete
-    if (session.user.role !== "ADMIN") {
-      return NextResponse.json(
-        { message: "Only admins can delete startups" },
-        { status: 403 }
-      )
-    }
-
     const startup = await prisma.startup.findUnique({
       where: { id: params.id },
     })
 
     if (!startup) {
       return NextResponse.json({ message: "Startup not found" }, { status: 404 })
+    }
+
+    // Allow admin or the founder who owns this startup
+    const isAdmin = session.user.role === "ADMIN"
+    const isOwner = startup.founderId === session.user.id
+
+    if (!isAdmin && !isOwner) {
+      return NextResponse.json(
+        { message: "You can only delete your own startups" },
+        { status: 403 }
+      )
     }
 
     await prisma.startup.delete({

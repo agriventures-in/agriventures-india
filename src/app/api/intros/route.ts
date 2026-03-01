@@ -18,6 +18,14 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 })
     }
 
+    // Only founders and investors can request introductions
+    if (session.user.role !== "FOUNDER" && session.user.role !== "INVESTOR" && session.user.role !== "ADMIN") {
+      return NextResponse.json(
+        { message: "Only founders and investors can request introductions" },
+        { status: 403 }
+      )
+    }
+
     let body
     try {
       body = await req.json()

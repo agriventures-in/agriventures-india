@@ -9,17 +9,13 @@ const PLATFORM_LINKS = [
 ]
 
 const RESOURCE_LINKS = [
-  { href: "/knowledge/founder-guides", label: "Founder Guides" },
-  { href: "/knowledge/government-schemes", label: "Government Schemes" },
-  { href: "/knowledge/research", label: "Research Reports" },
-  { href: "/docs/api", label: "API Documentation" },
+  { href: "/knowledge?category=GUIDE", label: "Founder Guides" },
+  { href: "/knowledge?category=SCHEME", label: "Government Schemes" },
+  { href: "/knowledge?category=REPORT", label: "Research Reports" },
 ]
 
 const COMPANY_LINKS = [
   { href: "/about", label: "About Us" },
-  { href: "/mission", label: "Our Mission" },
-  { href: "/team", label: "Team" },
-  { href: "/careers", label: "Careers" },
   { href: "/contact", label: "Contact" },
 ]
 
