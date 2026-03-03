@@ -132,7 +132,7 @@ export async function PATCH(
 
     // If admin changed the status, notify the founder via email + in-app
     if (isAdmin && body.status && body.status !== startup.status) {
-      const baseUrl = process.env.NEXTAUTH_URL || "https://agriventures.in"
+      const { BASE_URL: baseUrl } = await import("@/lib/config")
       const startupUrl = `${baseUrl}/startups/${startup.slug}`
 
       createNotification(

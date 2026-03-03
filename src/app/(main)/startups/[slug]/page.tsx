@@ -54,7 +54,7 @@ export async function generateMetadata({
 
   const ogUrl = new URL(
     "/api/og",
-    process.env.NEXTAUTH_URL || "https://agriventures.in"
+    process.env.NEXTAUTH_URL || "https://www.agriventures.in"
   )
   ogUrl.searchParams.set("title", startup.name)
   ogUrl.searchParams.set("tagline", startup.tagline)

@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     "verified impact",
     "Indian agritech startups",
   ],
-  metadataBase: new URL(process.env.NEXTAUTH_URL || "https://agriventures.in"),
+  metadataBase: new URL(process.env.NEXTAUTH_URL || "https://www.agriventures.in"),
   openGraph: {
     type: "website",
     locale: "en_IN",

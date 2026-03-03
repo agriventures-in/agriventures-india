@@ -1,7 +1,8 @@
 import { MetadataRoute } from "next"
+import { BASE_URL } from "@/lib/config"
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = process.env.NEXTAUTH_URL || "https://agriventures.in"
+  const baseUrl = BASE_URL
 
   return {
     rules: [

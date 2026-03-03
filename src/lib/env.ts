@@ -39,6 +39,6 @@ export const env = {
     return process.env.RESEND_API_KEY || ""
   },
   get FROM_EMAIL() {
-    return process.env.FROM_EMAIL || "AgriVentures India <onboarding@resend.dev>"
+    return process.env.FROM_EMAIL || "AgriVentures India <noreply@agriventures.in>"
   },
 }

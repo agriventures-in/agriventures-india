@@ -192,7 +192,7 @@ export async function POST(
     // Notify startup founder (if commenter is not the founder)
     if (session.user.id !== startup.founderId) {
       const commenterName = session.user.name || "Someone"
-      const baseUrl = process.env.NEXTAUTH_URL || "https://agriventures.in"
+      const { BASE_URL: baseUrl } = await import("@/lib/config")
       const startupUrl = `${baseUrl}/startups/${startup.slug}`
 
       // In-app notification

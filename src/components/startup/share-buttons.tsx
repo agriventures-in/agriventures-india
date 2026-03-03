@@ -19,7 +19,8 @@ interface ShareButtonsProps {
 export function ShareButtons({ startupName, startupSlug }: ShareButtonsProps) {
   const [copied, setCopied] = useState(false)
 
-  const url = `https://agriventures.in/startups/${startupSlug}`
+  const origin = typeof window !== "undefined" ? window.location.origin : "https://www.agriventures.in"
+  const url = `${origin}/startups/${startupSlug}`
   const text = `Check out ${startupName} on AgriVentures India — India's verified agritech startup directory`
 
   const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`

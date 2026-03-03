@@ -3,11 +3,21 @@ import { randomBytes } from "crypto"
 import { prisma } from "@/lib/prisma"
 import { sendEmail } from "@/lib/email"
 import { passwordResetEmail } from "@/lib/email-templates"
+import { rateLimit, getClientIp } from "@/lib/rate-limit"
 
 export const dynamic = "force-dynamic"
 
 export async function POST(req: Request) {
   try {
+    // Rate limit: 5 requests per minute per IP (stricter for password reset)
+    const ip = getClientIp(req)
+    const rl = rateLimit(ip, 5, 60_000)
+    if (rl.limited) {
+      return NextResponse.json(
+        { error: "Too many requests. Please try again later." },
+        { status: 429, headers: { "Retry-After": String(Math.ceil(rl.retryAfterMs / 1000)) } }
+      )
+    }
     let body
     try {
       body = await req.json()
@@ -49,7 +59,7 @@ export async function POST(req: Request) {
       })
 
       // Build reset URL
-      const baseUrl = process.env.NEXTAUTH_URL || "https://www.agriventures.in"
+      const { BASE_URL: baseUrl } = await import("@/lib/config")
       const resetUrl = `${baseUrl}/reset-password?token=${token}&email=${encodeURIComponent(normalizedEmail)}`
 
       // Send email (fire-and-forget)

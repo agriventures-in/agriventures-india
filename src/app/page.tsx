@@ -27,6 +27,9 @@ import { StatsCounter } from "@/components/common/stats-counter"
 import { Header } from "@/components/layout/header"
 import { Footer } from "@/components/layout/footer"
 import { TECH_CATEGORIES } from "@/lib/constants"
+import { prisma } from "@/lib/prisma"
+
+export const dynamic = "force-dynamic"
 
 /* ---------- icon mapping for the first 6 categories ---------- */
 const CATEGORY_ICONS: Record<string, React.ElementType> = {
@@ -53,11 +56,7 @@ const CATEGORY_DESCRIPTIONS: Record<string, string> = {
     "Farm automation, autonomous harvesters, and smart machinery reducing manual labor.",
 }
 
-const HERO_STATS = [
-  { value: "500+", label: "Startups" },
-  { value: "65+", label: "Investors" },
-  { value: "15%", label: "Verified" },
-]
+/* HERO_STATS are now fetched from the database in the async HomePage component */
 
 const HOW_IT_WORKS = [
   {
@@ -83,25 +82,45 @@ const HOW_IT_WORKS = [
   },
 ]
 
-const FOUNDER_BENEFITS = [
-  "Free forever platform -- no hidden charges",
-  "Verified impact badge builds credibility",
-  "Direct visibility to 65+ active investors",
-  "Community upvotes surface real traction",
-  "Government scheme matching & alerts",
-  "Job board to attract top agritech talent",
-]
+/* Benefits are computed inside the component to use dynamic investor count */
 
-const INVESTOR_BENEFITS = [
-  "Curated, thesis-matched deal flow",
-  "Verified impact data you can trust",
-  "Filter by stage, category, and geography",
-  "Community validation as social proof",
-  "Direct founder connect -- no middlemen",
-  "Quarterly verified impact reports",
-]
+export default async function HomePage() {
+  /* ---- real stats from the database ---- */
+  const [startupCount, investorCount, verifiedCount] = await Promise.all([
+    prisma.startup.count(),
+    prisma.user.count({ where: { role: "INVESTOR" } }),
+    prisma.startup.count({
+      where: { verificationLevel: { not: "NONE" } },
+    }),
+  ])
 
-export default function HomePage() {
+  const verifiedPct =
+    startupCount > 0 ? Math.round((verifiedCount / startupCount) * 100) : 0
+
+  const HERO_STATS = [
+    { value: `${startupCount}+`, label: "Startups" },
+    { value: `${investorCount}+`, label: "Investors" },
+    { value: `${verifiedPct}%`, label: "Verified" },
+  ]
+
+  const FOUNDER_BENEFITS = [
+    "Free forever platform — no hidden charges",
+    "Verified impact badge builds credibility",
+    `Direct visibility to ${investorCount}+ active investors`,
+    "Community upvotes surface real traction",
+    "Government scheme matching & alerts",
+    "Job board to attract top agritech talent",
+  ]
+
+  const INVESTOR_BENEFITS = [
+    "Curated, thesis-matched deal flow",
+    "Verified impact data you can trust",
+    "Filter by stage, category, and geography",
+    "Community validation as social proof",
+    "Direct founder connect — no middlemen",
+    "Quarterly verified impact reports",
+  ]
+
   const firstSixCategories = TECH_CATEGORIES.slice(0, 6)
 
   return (

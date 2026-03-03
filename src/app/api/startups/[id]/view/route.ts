@@ -26,6 +26,23 @@ export async function POST(
     const session = await getServerSession(authOptions)
     const userId = session?.user?.id || null
 
+    // Deduplicate: for logged-in users, check if a view was recorded in last 24hrs
+    if (userId) {
+      const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000)
+      const recentView = await prisma.startupView.findFirst({
+        where: {
+          startupId,
+          userId,
+          createdAt: { gte: twentyFourHoursAgo },
+        },
+        select: { id: true },
+      })
+
+      if (recentView) {
+        return NextResponse.json({ success: true, deduplicated: true })
+      }
+    }
+
     // Record view + increment aggregate counter in parallel
     await Promise.all([
       prisma.startupView.create({

@@ -1,6 +1,7 @@
 import { Resend } from "resend"
 import type { Prisma } from "@prisma/client"
 import { prisma } from "@/lib/prisma"
+import { FROM_EMAIL } from "@/lib/config"
 
 let _resend: Resend | null = null
 
@@ -9,9 +10,6 @@ function getResend(): Resend | null {
   if (!_resend) _resend = new Resend(process.env.RESEND_API_KEY)
   return _resend
 }
-
-const FROM_EMAIL =
-  process.env.FROM_EMAIL || "AgriVentures India <noreply@agriventures.in>"
 
 /**
  * Send an email via Resend.

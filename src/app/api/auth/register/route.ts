@@ -4,9 +4,19 @@ import { prisma } from "@/lib/prisma"
 import { registerSchema } from "@/lib/validations/auth"
 import { sendEmail, createNotification } from "@/lib/email"
 import { welcomeEmail } from "@/lib/email-templates"
+import { rateLimit, getClientIp } from "@/lib/rate-limit"
 
 export async function POST(req: Request) {
   try {
+    // Rate limit: 10 requests per minute per IP
+    const ip = getClientIp(req)
+    const rl = rateLimit(ip, 10, 60_000)
+    if (rl.limited) {
+      return NextResponse.json(
+        { error: "Too many requests. Please try again later." },
+        { status: 429, headers: { "Retry-After": String(Math.ceil(rl.retryAfterMs / 1000)) } }
+      )
+    }
     let body
     try {
       body = await req.json()
