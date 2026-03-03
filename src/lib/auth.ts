@@ -142,21 +142,22 @@ export const authOptions: NextAuthOptions = {
       }
       return true
     },
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger }) {
       if (user) {
         token.id = user.id
         token.role = user.role
       }
 
-      // Refresh role from DB if not present (e.g. OAuth sign-in)
-      if (!token.role && token.email) {
+      // Refresh from DB if not present (e.g. OAuth sign-in) or on session update
+      if ((!token.role || trigger === "update") && token.email) {
         const dbUser = await prisma.user.findUnique({
           where: { email: token.email },
-          select: { role: true, id: true },
+          select: { role: true, id: true, emailVerified: true },
         })
         if (dbUser) {
           token.role = dbUser.role
           token.id = dbUser.id
+          token.emailVerified = !!dbUser.emailVerified
         }
       }
 
@@ -166,6 +167,7 @@ export const authOptions: NextAuthOptions = {
       if (session.user) {
         session.user.id = token.id as string
         session.user.role = token.role
+        session.user.emailVerified = token.emailVerified ?? false
       }
       return session
     },

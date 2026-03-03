@@ -87,7 +87,7 @@ export function RegisterForm() {
         return
       }
 
-      toast.success("Account created! Signing you in...")
+      toast.success("Account created! Please check your email to verify your account.")
 
       // Auto sign-in after registration
       const signInResult = await signIn("credentials", {
@@ -98,7 +98,7 @@ export function RegisterForm() {
 
       if (signInResult?.error) {
         toast.error("Account created but sign-in failed. Please log in manually.")
-        router.push("/login")
+        router.push("/verify-email")
         return
       }
 

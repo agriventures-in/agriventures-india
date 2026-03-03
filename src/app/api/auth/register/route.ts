@@ -1,9 +1,10 @@
 import { hash } from "bcryptjs"
+import { randomBytes } from "crypto"
 import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 import { registerSchema } from "@/lib/validations/auth"
 import { sendEmail, createNotification } from "@/lib/email"
-import { welcomeEmail } from "@/lib/email-templates"
+import { welcomeEmail, emailVerificationEmail } from "@/lib/email-templates"
 import { rateLimit, getClientIp } from "@/lib/rate-limit"
 
 export async function POST(req: Request) {
@@ -66,6 +67,29 @@ export async function POST(req: Request) {
       },
     })
 
+    // Generate email verification token
+    const verifyToken = randomBytes(32).toString("hex")
+    const verifyExpires = new Date(Date.now() + 24 * 60 * 60 * 1000) // 24 hours
+
+    await prisma.verificationToken.create({
+      data: {
+        identifier: `email-verify:${user.email}`,
+        token: verifyToken,
+        expires: verifyExpires,
+      },
+    })
+
+    // Build verification URL
+    const { BASE_URL: baseUrl } = await import("@/lib/config")
+    const verifyUrl = `${baseUrl}/api/auth/verify-email?token=${verifyToken}&email=${encodeURIComponent(user.email)}`
+
+    // Send verification email (fire-and-forget)
+    sendEmail(
+      user.email,
+      "Verify Your Email — AgriVentures India",
+      emailVerificationEmail(user.fullName, verifyUrl)
+    ).catch(console.error)
+
     // Send welcome email (fire-and-forget)
     sendEmail(
       user.email,
@@ -77,11 +101,11 @@ export async function POST(req: Request) {
       user.id,
       "welcome",
       "Welcome to AgriVentures!",
-      "Your account has been created. Start exploring India's agritech ecosystem."
+      "Your account has been created. Please verify your email to unlock all features."
     ).catch(console.error)
 
     return NextResponse.json(
-      { user, message: "Account created successfully" },
+      { user, message: "Account created successfully. Please check your email to verify your account." },
       { status: 201 }
     )
   } catch (error) {

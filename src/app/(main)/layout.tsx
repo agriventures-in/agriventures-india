@@ -2,6 +2,7 @@
 
 import { Header } from "@/components/layout/header"
 import { Footer } from "@/components/layout/footer"
+import { EmailVerifyBanner } from "@/components/common/email-verify-banner"
 import { useAppStore } from "@/store/app-store"
 
 function SarpanchModeWrapper({ children }: { children: React.ReactNode }) {
@@ -23,6 +24,7 @@ export default function MainLayout({
     <SarpanchModeWrapper>
       <div className="flex min-h-screen flex-col">
         <Header />
+        <EmailVerifyBanner />
         <main className="flex-1">{children}</main>
         <Footer />
       </div>

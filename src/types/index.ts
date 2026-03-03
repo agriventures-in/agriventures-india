@@ -13,6 +13,7 @@ declare module "next-auth" {
       name: string
       role: UserRole
       image?: string
+      emailVerified: boolean
     }
   }
 }
@@ -21,5 +22,6 @@ declare module "next-auth/jwt" {
   interface JWT {
     role: UserRole
     id: string
+    emailVerified: boolean
   }
 }

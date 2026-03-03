@@ -223,6 +223,40 @@ export function introResponseEmail(
   `)
 }
 
+/** Email verification email. */
+export function emailVerificationEmail(userName: string, verifyUrl: string): string {
+  return layout(`
+    <h2 style="margin:0 0 16px;color:#111827;font-size:20px;font-weight:600;">
+      Verify Your Email
+    </h2>
+    <p style="margin:0 0 12px;color:#374151;font-size:15px;line-height:1.6;">
+      Hi ${escapeHtml(userName)},
+    </p>
+    <p style="margin:0 0 20px;color:#374151;font-size:15px;line-height:1.6;">
+      Thanks for signing up for AgriVentures India! Please verify your email address by clicking the button below.
+      This link will expire in 24 hours.
+    </p>
+    <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 0 20px;">
+      <tr>
+        <td style="border-radius:8px;background-color:${BRAND_COLOR};">
+          <a href="${verifyUrl}" target="_blank" style="display:inline-block;padding:12px 28px;color:#ffffff;font-size:15px;font-weight:600;text-decoration:none;border-radius:8px;">
+            Verify Email Address
+          </a>
+        </td>
+      </tr>
+    </table>
+    <p style="margin:0 0 12px;color:#6b7280;font-size:13px;line-height:1.6;">
+      If the button does not work, copy and paste this link into your browser:
+    </p>
+    <p style="margin:0 0 20px;color:#6b7280;font-size:12px;word-break:break-all;">
+      ${verifyUrl}
+    </p>
+    <p style="margin:0;color:#6b7280;font-size:13px;line-height:1.6;">
+      If you did not create an account, you can safely ignore this email.
+    </p>
+  `)
+}
+
 /** Password reset email. */
 export function passwordResetEmail(userName: string, resetUrl: string): string {
   return layout(`
