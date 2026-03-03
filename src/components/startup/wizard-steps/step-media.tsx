@@ -115,19 +115,58 @@ export function StepMedia({ formData, updateFormData, errors }: StepMediaProps) 
       <div className="space-y-3">
         <div className="flex items-center gap-2">
           <FileText className="h-4 w-4 text-muted-foreground" />
-          <Label htmlFor="pitchDeckUrl">Pitch Deck URL</Label>
+          <Label>Pitch Deck</Label>
         </div>
         <p className="text-xs text-muted-foreground">
-          Link to your pitch deck (Google Slides, Docsend, PDF link, etc.)
+          Upload your pitch deck as a PDF (max 10MB) or paste a link (Google Slides, Docsend, etc.)
         </p>
-        <Input
-          id="pitchDeckUrl"
-          type="url"
-          placeholder="https://docs.google.com/presentation/..."
-          value={formData.pitchDeckUrl}
-          onChange={(e) => updateFormData({ pitchDeckUrl: e.target.value })}
-          className={errors.pitchDeckUrl ? "border-destructive" : ""}
-        />
+
+        {/* Upload PDF or paste URL toggle */}
+        {!formData.pitchDeckUrl ? (
+          <div className="space-y-3">
+            <FileUpload
+              onUpload={(url) => updateFormData({ pitchDeckUrl: url })}
+              accept="application/pdf"
+              maxSizeMB={10}
+              label="Upload pitch deck (PDF)"
+            />
+            <div className="flex items-center gap-3">
+              <div className="h-px flex-1 bg-border" />
+              <span className="text-xs text-muted-foreground">or paste a link</span>
+              <div className="h-px flex-1 bg-border" />
+            </div>
+            <Input
+              id="pitchDeckUrl"
+              type="url"
+              placeholder="https://docs.google.com/presentation/..."
+              value={formData.pitchDeckUrl}
+              onChange={(e) => updateFormData({ pitchDeckUrl: e.target.value })}
+              className={errors.pitchDeckUrl ? "border-destructive" : ""}
+            />
+          </div>
+        ) : (
+          <div className="flex items-center gap-3 rounded-lg border bg-muted/50 p-3">
+            <FileText className="h-8 w-8 shrink-0 text-emerald" />
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-sm font-medium text-foreground">
+                {formData.pitchDeckUrl.includes("blob.vercel-storage.com")
+                  ? "Pitch deck uploaded"
+                  : "Pitch deck linked"}
+              </p>
+              <p className="truncate text-xs text-muted-foreground">
+                {formData.pitchDeckUrl}
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => updateFormData({ pitchDeckUrl: "" })}
+              className="shrink-0 rounded-full p-1 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+              aria-label="Remove pitch deck"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+        )}
         {errors.pitchDeckUrl && (
           <p className="text-sm text-destructive">{errors.pitchDeckUrl}</p>
         )}
