@@ -8,6 +8,7 @@ import {
   BookOpen,
   Briefcase,
   User,
+  Users,
   Rocket,
   LayoutDashboard,
   LogOut,
@@ -32,6 +33,7 @@ import { languages, type Language } from "@/i18n/config"
 
 const NAV_LINKS = [
   { href: "/discover", labelKey: "nav.discover", icon: Compass },
+  { href: "/co-founders", labelKey: "nav.cofounders", icon: Users },
   { href: "/knowledge", labelKey: "nav.knowledge", icon: BookOpen },
   { href: "/jobs", labelKey: "nav.jobs", icon: Briefcase },
 ]

@@ -126,6 +126,7 @@ model User {
   notifications         Notification[]
   introRequestsSent     IntroRequest[]    @relation("IntroFrom")
   introRequestsReceived IntroRequest[]    @relation("IntroTo")
+  coFounderProfile      CoFounderProfile?
 
   @@map("users")
 }
@@ -174,6 +175,7 @@ model Startup {
   jobs                 Job[]
   introRequests        IntroRequest[]
   views                StartupView[]
+  coFounderProfiles    CoFounderProfile[]
 
   @@index([techCategory])
   @@index([stage])
@@ -352,4 +354,40 @@ model StartupView {
 
   @@index([startupId, createdAt])
   @@map("startup_views")
+}
+
+// ─── Co-Founder Matchmaker ─────────────────────────────────────
+
+enum Commitment {
+  FULL_TIME
+  PART_TIME
+  ADVISORY
+}
+
+model CoFounderProfile {
+  id              String       @id @default(cuid())
+  userId          String       @unique
+  title           String       // e.g. "Looking for a Technical Co-Founder"
+  bio             String       @db.Text // What you bring to the table
+  lookingFor      String       @db.Text // What you want in a co-founder
+  skills          Json         // Your skills: string[]
+  desiredSkills   Json         // Skills you want: string[]
+  category        String       // AgriTech category
+  preferredStage  StartupStage @default(IDEATION)
+  state           String?      // Indian state
+  commitment      Commitment   @default(FULL_TIME)
+  hasStartup      Boolean      @default(false)
+  startupId       String?      // Optional link to existing startup
+  linkedinUrl     String?
+  isActive        Boolean      @default(true)
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  startup Startup? @relation(fields: [startupId], references: [id])
+
+  @@index([category])
+  @@index([isActive])
+  @@index([preferredStage])
+  @@map("co_founder_profiles")
 }
