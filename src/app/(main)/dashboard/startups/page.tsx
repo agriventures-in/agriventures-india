@@ -19,6 +19,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { ReadinessScore } from "@/components/startup/readiness-score"
+import { ActivityFeed } from "@/components/common/activity-feed"
 
 export const metadata: Metadata = {
   title: "My Startups",
@@ -221,17 +222,23 @@ export default async function MyStartupsPage() {
         </div>
       )}
 
-      {/* Readiness Scores */}
+      {/* Readiness Scores + Activity Feed */}
       {startups.length > 0 && (
-        <div className="mt-8 space-y-4">
-          <h2 className="text-lg font-semibold text-foreground">Investor Readiness</h2>
-          <div className="grid gap-4 sm:grid-cols-2">
-            {startups.map((startup) => (
-              <div key={`readiness-${startup.id}`}>
-                <p className="mb-2 text-sm font-medium text-muted-foreground">{startup.name}</p>
-                <ReadinessScore startupId={startup.id} />
-              </div>
-            ))}
+        <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_360px]">
+          <div className="space-y-4">
+            <h2 className="text-lg font-semibold text-foreground">Investor Readiness</h2>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {startups.map((startup) => (
+                <div key={`readiness-${startup.id}`}>
+                  <p className="mb-2 text-sm font-medium text-muted-foreground">{startup.name}</p>
+                  <ReadinessScore startupId={startup.id} />
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="space-y-4">
+            <h2 className="text-lg font-semibold text-foreground">Platform Activity</h2>
+            <ActivityFeed />
           </div>
         </div>
       )}

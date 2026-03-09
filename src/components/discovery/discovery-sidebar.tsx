@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Rocket, TrendingUp, BarChart3, Users, Building2 } from "lucide-react"
 import { TECH_CATEGORIES } from "@/lib/constants"
+import { ActivityFeed } from "@/components/common/activity-feed"
 
 export function DiscoverySidebar() {
   return (
@@ -47,6 +48,9 @@ export function DiscoverySidebar() {
           ))}
         </CardContent>
       </Card>
+
+      {/* Activity Feed */}
+      <ActivityFeed />
 
       {/* Platform Stats */}
       <Card>
