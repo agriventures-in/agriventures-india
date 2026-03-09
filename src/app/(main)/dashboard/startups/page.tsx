@@ -18,6 +18,7 @@ import { prisma } from "@/lib/prisma"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { ReadinessScore } from "@/components/startup/readiness-score"
 
 export const metadata: Metadata = {
   title: "My Startups",
@@ -217,6 +218,21 @@ export default async function MyStartupsPage() {
               </Card>
             )
           })}
+        </div>
+      )}
+
+      {/* Readiness Scores */}
+      {startups.length > 0 && (
+        <div className="mt-8 space-y-4">
+          <h2 className="text-lg font-semibold text-foreground">Investor Readiness</h2>
+          <div className="grid gap-4 sm:grid-cols-2">
+            {startups.map((startup) => (
+              <div key={`readiness-${startup.id}`}>
+                <p className="mb-2 text-sm font-medium text-muted-foreground">{startup.name}</p>
+                <ReadinessScore startupId={startup.id} />
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </div>
