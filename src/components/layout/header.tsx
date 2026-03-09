@@ -14,6 +14,7 @@ import {
   LogOut,
   Globe,
   Handshake,
+  IndianRupee,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
@@ -36,6 +37,7 @@ const NAV_LINKS = [
   { href: "/co-founders", labelKey: "nav.cofounders", icon: Users },
   { href: "/knowledge", labelKey: "nav.knowledge", icon: BookOpen },
   { href: "/jobs", labelKey: "nav.jobs", icon: Briefcase },
+  { href: "/funding-radar", labelKey: "nav.funding", icon: IndianRupee },
 ]
 
 export function Header() {

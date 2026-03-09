@@ -15,6 +15,7 @@ import {
   LayoutDashboard,
   Globe,
   Menu,
+  IndianRupee,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
@@ -32,6 +33,7 @@ const NAV_LINKS = [
   { href: "/discover", label: "Discover", icon: Compass },
   { href: "/knowledge", label: "Knowledge Hub", icon: BookOpen },
   { href: "/jobs", label: "Jobs", icon: Briefcase },
+  { href: "/funding-radar", label: "Funding", icon: IndianRupee },
 ]
 
 const LANGUAGES = [
