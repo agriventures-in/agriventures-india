@@ -7,8 +7,8 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { MapPin, Briefcase, Sprout, ArrowRight, Plus, Loader2 } from "lucide-react"
-import { TECH_CATEGORIES, INDIAN_STATES } from "@/lib/constants"
+import { MapPin, Briefcase, Sprout, Plus, Loader2 } from "lucide-react"
+import { TECH_CATEGORIES } from "@/lib/constants"
 import { useSession } from "next-auth/react"
 
 interface CoFounderProfile {

@@ -1,10 +1,8 @@
 "use client"
 
 import { useState } from "react"
-import Link from "next/link"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Building2, Linkedin, Briefcase, Loader2, IndianRupee } from "lucide-react"
@@ -40,7 +38,7 @@ function formatCheckSize(amount: number | null): string {
   return `${amount.toLocaleString("en-IN")}`
 }
 
-export function InvestorDiscovery({ initialInvestors, initialTotal }: Props) {
+export function InvestorDiscovery({ initialInvestors }: Props) {
   const [investors, setInvestors] = useState<InvestorProfile[]>(initialInvestors)
   const [loading, setLoading] = useState(false)
   const [filters, setFilters] = useState({ category: "", stage: "" })
