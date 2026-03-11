@@ -67,6 +67,7 @@ export async function POST(req: NextRequest) {
           demoVideoUrl: data.demoVideoUrl || null,
           fundingStatus: data.fundingStatus || null,
           fundingAmount: data.fundingAmount || null,
+          socialLinks: data.socialLinks ?? undefined,
           status: "SUBMITTED",
         },
       })

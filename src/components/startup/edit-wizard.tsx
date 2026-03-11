@@ -140,6 +140,24 @@ function convertStartupToFormData(startup: StartupData): WizardFormData {
     ? (startup.galleryUrls as string[])
     : []
 
+  // Parse social links from JSON
+  const parsedSocialLinks = (() => {
+    if (
+      startup.socialLinks &&
+      typeof startup.socialLinks === "object" &&
+      !Array.isArray(startup.socialLinks)
+    ) {
+      const sl = startup.socialLinks as Record<string, unknown>
+      return {
+        twitterUrl: String(sl.twitterUrl || ""),
+        linkedinUrl: String(sl.linkedinUrl || ""),
+        youtubeUrl: String(sl.youtubeUrl || ""),
+        instagramUrl: String(sl.instagramUrl || ""),
+      }
+    }
+    return { twitterUrl: "", linkedinUrl: "", youtubeUrl: "", instagramUrl: "" }
+  })()
+
   // Parse team members
   const teamMembers =
     startup.teamMembers.length > 0
@@ -174,6 +192,10 @@ function convertStartupToFormData(startup: StartupData): WizardFormData {
     demoVideoUrl: startup.demoVideoUrl || "",
     fundingStatus: startup.fundingStatus || "",
     fundingAmount: startup.fundingAmount || "",
+    twitterUrl: parsedSocialLinks.twitterUrl,
+    linkedinUrl: parsedSocialLinks.linkedinUrl,
+    youtubeUrl: parsedSocialLinks.youtubeUrl,
+    instagramUrl: parsedSocialLinks.instagramUrl,
   }
 }
 
@@ -243,6 +265,10 @@ export function EditWizard({ startup }: EditWizardProps) {
           demoVideoUrl: formData.demoVideoUrl || undefined,
           fundingStatus: formData.fundingStatus || undefined,
           fundingAmount: formData.fundingAmount || undefined,
+          twitterUrl: formData.twitterUrl || undefined,
+          linkedinUrl: formData.linkedinUrl || undefined,
+          youtubeUrl: formData.youtubeUrl || undefined,
+          instagramUrl: formData.instagramUrl || undefined,
         }
       default:
         return {}
@@ -310,6 +336,12 @@ export function EditWizard({ startup }: EditWizardProps) {
         demoVideoUrl: formData.demoVideoUrl || undefined,
         fundingStatus: formData.fundingStatus || undefined,
         fundingAmount: formData.fundingAmount || undefined,
+        socialLinks: {
+          twitterUrl: formData.twitterUrl || undefined,
+          linkedinUrl: formData.linkedinUrl || undefined,
+          youtubeUrl: formData.youtubeUrl || undefined,
+          instagramUrl: formData.instagramUrl || undefined,
+        },
       }
 
       const res = await fetch(`/api/startups/${startup.id}`, {

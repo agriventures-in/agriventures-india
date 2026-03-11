@@ -22,6 +22,9 @@ import {
   FileText,
   Video,
   HandCoins,
+  Linkedin,
+  Youtube,
+  Instagram,
 } from "lucide-react"
 import { useSession } from "next-auth/react"
 import { TECH_CATEGORIES, STARTUP_STAGES, FUNDING_STATUSES } from "@/lib/constants"
@@ -63,6 +66,7 @@ interface StartupProfileViewProps {
     pitchDeckUrl: string | null
     demoVideoUrl: string | null
     galleryUrls: JsonValue
+    socialLinks: JsonValue
     verificationLevel: VerificationLevel
     upvoteCount: number
     viewCount: number
@@ -133,6 +137,15 @@ export function StartupProfileView({ startup }: StartupProfileViewProps) {
     sampleSize?: string
     results?: string
   } | null
+
+  const socialLinks = (startup.socialLinks && typeof startup.socialLinks === "object" && !Array.isArray(startup.socialLinks))
+    ? (startup.socialLinks as { twitterUrl?: string; linkedinUrl?: string; youtubeUrl?: string; instagramUrl?: string })
+    : null
+
+  const hasSocialLinks = socialLinks && (
+    socialLinks.twitterUrl || socialLinks.linkedinUrl ||
+    socialLinks.youtubeUrl || socialLinks.instagramUrl
+  )
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
@@ -547,6 +560,70 @@ export function StartupProfileView({ startup }: StartupProfileViewProps) {
               </div>
             </CardContent>
           </Card>
+
+          {/* Social Links */}
+          {hasSocialLinks && (
+            <Card>
+              <CardContent className="space-y-3 p-5">
+                <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                  Social Links
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {socialLinks.twitterUrl && (
+                    <a
+                      href={socialLinks.twitterUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex h-9 w-9 items-center justify-center rounded-lg border transition-colors hover:bg-muted"
+                      title="Twitter / X"
+                    >
+                      <svg
+                        className="h-4 w-4 text-foreground"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        aria-hidden="true"
+                      >
+                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                      </svg>
+                    </a>
+                  )}
+                  {socialLinks.linkedinUrl && (
+                    <a
+                      href={socialLinks.linkedinUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex h-9 w-9 items-center justify-center rounded-lg border transition-colors hover:bg-muted"
+                      title="LinkedIn"
+                    >
+                      <Linkedin className="h-4 w-4 text-foreground" />
+                    </a>
+                  )}
+                  {socialLinks.youtubeUrl && (
+                    <a
+                      href={socialLinks.youtubeUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex h-9 w-9 items-center justify-center rounded-lg border transition-colors hover:bg-muted"
+                      title="YouTube"
+                    >
+                      <Youtube className="h-4 w-4 text-foreground" />
+                    </a>
+                  )}
+                  {socialLinks.instagramUrl && (
+                    <a
+                      href={socialLinks.instagramUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex h-9 w-9 items-center justify-center rounded-lg border transition-colors hover:bg-muted"
+                      title="Instagram"
+                    >
+                      <Instagram className="h-4 w-4 text-foreground" />
+                    </a>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
           {/* Verification Progress */}
           <VerificationProgress

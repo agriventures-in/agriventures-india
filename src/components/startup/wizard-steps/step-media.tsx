@@ -13,7 +13,7 @@ import {
 import { ImageUpload } from "@/components/ui/image-upload"
 import { FileUpload } from "@/components/ui/file-upload"
 import { FUNDING_STATUSES } from "@/lib/constants"
-import { FileText, Video, Wallet, Images, X } from "lucide-react"
+import { FileText, Video, Wallet, Images, X, Share2 } from "lucide-react"
 import type { WizardFormData } from "@/components/startup/submit-wizard"
 
 interface StepMediaProps {
@@ -192,6 +192,82 @@ export function StepMedia({ formData, updateFormData, errors }: StepMediaProps) 
         {errors.demoVideoUrl && (
           <p className="text-sm text-destructive">{errors.demoVideoUrl}</p>
         )}
+      </div>
+
+      {/* Social Links Section */}
+      <div className="rounded-lg border p-5">
+        <div className="mb-4 flex items-center gap-2 text-sm font-medium text-foreground">
+          <Share2 className="h-4 w-4" />
+          Social Links
+        </div>
+        <p className="mb-4 text-xs text-muted-foreground">
+          Add your startup&apos;s social media profiles so investors and the community can follow your journey.
+        </p>
+        <div className="grid gap-4 sm:grid-cols-2">
+          {/* Twitter / X */}
+          <div className="space-y-2">
+            <Label htmlFor="twitterUrl">Twitter / X</Label>
+            <Input
+              id="twitterUrl"
+              type="url"
+              placeholder="https://x.com/yourstartup"
+              value={formData.twitterUrl}
+              onChange={(e) => updateFormData({ twitterUrl: e.target.value })}
+              className={errors.twitterUrl ? "border-destructive" : ""}
+            />
+            {errors.twitterUrl && (
+              <p className="text-sm text-destructive">{errors.twitterUrl}</p>
+            )}
+          </div>
+
+          {/* LinkedIn */}
+          <div className="space-y-2">
+            <Label htmlFor="linkedinUrl">LinkedIn</Label>
+            <Input
+              id="linkedinUrl"
+              type="url"
+              placeholder="https://linkedin.com/company/yourstartup"
+              value={formData.linkedinUrl}
+              onChange={(e) => updateFormData({ linkedinUrl: e.target.value })}
+              className={errors.linkedinUrl ? "border-destructive" : ""}
+            />
+            {errors.linkedinUrl && (
+              <p className="text-sm text-destructive">{errors.linkedinUrl}</p>
+            )}
+          </div>
+
+          {/* YouTube */}
+          <div className="space-y-2">
+            <Label htmlFor="youtubeUrl">YouTube</Label>
+            <Input
+              id="youtubeUrl"
+              type="url"
+              placeholder="https://youtube.com/@yourstartup"
+              value={formData.youtubeUrl}
+              onChange={(e) => updateFormData({ youtubeUrl: e.target.value })}
+              className={errors.youtubeUrl ? "border-destructive" : ""}
+            />
+            {errors.youtubeUrl && (
+              <p className="text-sm text-destructive">{errors.youtubeUrl}</p>
+            )}
+          </div>
+
+          {/* Instagram */}
+          <div className="space-y-2">
+            <Label htmlFor="instagramUrl">Instagram</Label>
+            <Input
+              id="instagramUrl"
+              type="url"
+              placeholder="https://instagram.com/yourstartup"
+              value={formData.instagramUrl}
+              onChange={(e) => updateFormData({ instagramUrl: e.target.value })}
+              className={errors.instagramUrl ? "border-destructive" : ""}
+            />
+            {errors.instagramUrl && (
+              <p className="text-sm text-destructive">{errors.instagramUrl}</p>
+            )}
+          </div>
+        </div>
       </div>
 
       {/* Funding Section */}

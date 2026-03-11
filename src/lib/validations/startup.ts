@@ -119,6 +119,34 @@ export const mediaSchema = z.object({
     .or(z.literal("")),
   fundingStatus: z.string().optional(),
   fundingAmount: z.string().optional(),
+  twitterUrl: z
+    .string()
+    .url("Please enter a valid URL")
+    .optional()
+    .or(z.literal("")),
+  linkedinUrl: z
+    .string()
+    .url("Please enter a valid URL")
+    .optional()
+    .or(z.literal("")),
+  youtubeUrl: z
+    .string()
+    .url("Please enter a valid URL")
+    .optional()
+    .or(z.literal("")),
+  instagramUrl: z
+    .string()
+    .url("Please enter a valid URL")
+    .optional()
+    .or(z.literal("")),
+})
+
+// Social Links schema (stored as JSON in the DB)
+export const socialLinksSchema = z.object({
+  twitterUrl: z.string().url().optional().or(z.literal("")).or(z.undefined()),
+  linkedinUrl: z.string().url().optional().or(z.literal("")).or(z.undefined()),
+  youtubeUrl: z.string().url().optional().or(z.literal("")).or(z.undefined()),
+  instagramUrl: z.string().url().optional().or(z.literal("")).or(z.undefined()),
 })
 
 // Combined full schema for the API
@@ -129,6 +157,9 @@ export const createStartupSchema = startupBasicsSchema
   .merge(fieldTrialSchema)
   .merge(teamSchema)
   .merge(mediaSchema)
+  .extend({
+    socialLinks: socialLinksSchema.optional(),
+  })
 
 export type StartupBasicsInput = z.infer<typeof startupBasicsSchema>
 export type ProblemSolutionInput = z.infer<typeof problemSolutionSchema>
