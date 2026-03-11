@@ -1,12 +1,13 @@
 import Link from "next/link"
-import { ShieldCheck, ArrowLeft } from "lucide-react"
+import Image from "next/image"
+import { ArrowLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 export default function NotFound() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center px-4">
       <div className="flex flex-col items-center gap-6 text-center">
-        <ShieldCheck className="h-16 w-16 text-emerald/30" />
+        <Image src="/images/mascot.png" alt="AgriVentures India" width={120} height={120} className="h-28 w-28 opacity-40" />
         <div>
           <h1 className="text-6xl font-bold tracking-tight text-forest">404</h1>
           <p className="mt-2 text-xl font-medium text-foreground">

@@ -1,12 +1,12 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import { useSession, signOut } from "next-auth/react"
 import {
   Compass,
   BookOpen,
   Briefcase,
-  ShieldCheck,
   LogIn,
   UserPlus,
   LogOut,
@@ -16,6 +16,7 @@ import {
   Globe,
   Menu,
   IndianRupee,
+  Shield,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
@@ -59,7 +60,7 @@ export function MobileNav() {
       <SheetContent side="left" className="w-[280px] sm:w-[360px]">
         <SheetHeader>
           <SheetTitle className="flex items-center gap-2">
-            <ShieldCheck className="h-5 w-5 text-forest" />
+            <Image src="/images/icon-logo.png" alt="AgriVentures India" width={24} height={24} className="h-6 w-6" />
             <span className="text-forest font-bold">AgriVentures</span>
           </SheetTitle>
         </SheetHeader>
@@ -93,7 +94,7 @@ export function MobileNav() {
                 : "text-foreground/80 hover:bg-accent"
             }`}
           >
-            <ShieldCheck className="h-4 w-4" />
+            <Shield className="h-4 w-4" />
             {isSarpanchMode ? "सरपंच मोड ON" : "Sarpanch Mode"}
           </button>
         </div>

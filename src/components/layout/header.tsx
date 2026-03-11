@@ -1,9 +1,9 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import { useSession, signOut } from "next-auth/react"
 import {
-  ShieldCheck,
   Compass,
   BookOpen,
   Briefcase,
@@ -15,6 +15,7 @@ import {
   Globe,
   Handshake,
   IndianRupee,
+  Shield,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
@@ -64,7 +65,14 @@ export function Header() {
 
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
-            <ShieldCheck className="h-6 w-6 text-forest" />
+            <Image
+              src="/images/icon-logo.png"
+              alt="AgriVentures India"
+              width={32}
+              height={32}
+              className="h-8 w-8"
+              priority
+            />
             <span className="text-lg font-bold tracking-tight text-forest">
               AgriVentures
             </span>
@@ -124,7 +132,7 @@ export function Header() {
                 : "border border-border bg-background text-muted-foreground hover:border-saffron/50 hover:text-saffron"
             }`}
           >
-            <ShieldCheck className="h-3.5 w-3.5" />
+            <Shield className="h-3.5 w-3.5" />
             {isSarpanchMode ? t("sarpanch.mode") : "Sarpanch Mode"}
           </button>
 

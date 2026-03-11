@@ -158,10 +158,21 @@ export async function GET(req: NextRequest) {
     }
 
     if (search) {
+      // Format for PostgreSQL full-text search:
+      // Split into words, add :* suffix for prefix matching, join with & for AND
+      const tsQuery = search
+        .trim()
+        .split(/\s+/)
+        .filter((word) => word.length > 0)
+        .map((word) => `${word}:*`)
+        .join(" & ")
+
       where.OR = [
-        { name: { contains: search, mode: "insensitive" } },
-        { tagline: { contains: search, mode: "insensitive" } },
-        { description: { contains: search, mode: "insensitive" } },
+        { name: { search: tsQuery } },
+        { tagline: { search: tsQuery } },
+        { description: { search: tsQuery } },
+        { problemStatement: { search: tsQuery } },
+        { solution: { search: tsQuery } },
       ]
     }
 

@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { ShieldCheck } from "lucide-react"
+import Image from "next/image"
 
 const PLATFORM_LINKS = [
   { href: "/discover", label: "Discover Startups" },
@@ -33,10 +33,13 @@ export function Footer() {
         {/* Top section with logo and tagline */}
         <div className="mb-10 flex flex-col items-start gap-3">
           <Link href="/" className="flex items-center gap-2.5">
-            <ShieldCheck className="h-7 w-7 text-lime" />
-            <span className="text-xl font-bold tracking-tight text-white">
-              AgriVentures
-            </span>
+            <Image
+              src="/images/logo-reversed.png"
+              alt="AgriVentures India"
+              width={160}
+              height={40}
+              className="h-10 w-auto"
+            />
           </Link>
           <p className="max-w-md text-sm leading-relaxed text-white/60">
             Built for India&apos;s Agritech Ecosystem. Making invisible

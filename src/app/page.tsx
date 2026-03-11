@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 import {
   ArrowRight,
   Target,
@@ -11,7 +12,6 @@ import {
   Users,
   TrendingUp,
   CheckCircle2,
-  ShieldCheck,
   Sprout,
   BarChart3,
   Globe,
@@ -134,66 +134,82 @@ export default async function HomePage() {
           <div className="pointer-events-none absolute -right-40 -top-40 h-[500px] w-[500px] rounded-full bg-emerald/5 blur-3xl" />
           <div className="pointer-events-none absolute -bottom-20 -left-20 h-[300px] w-[300px] rounded-full bg-lime/10 blur-3xl" />
 
-          <div className="container relative mx-auto px-4 py-20 md:py-28 lg:py-36">
-            <div className="mx-auto max-w-4xl text-center">
-              <Badge
-                variant="outline"
-                className="mb-6 border-emerald/30 bg-emerald/5 px-4 py-1.5 text-emerald"
-              >
-                <Sprout className="mr-1.5 h-3.5 w-3.5" />
-                India&apos;s Verified Agritech Platform
-              </Badge>
+          <div className="container relative mx-auto px-4 py-16 md:py-24 lg:py-32">
+            <div className="grid items-center gap-10 lg:grid-cols-[1fr_400px] lg:gap-16">
+              {/* Left: Content */}
+              <div className="text-center lg:text-left">
+                <Badge
+                  variant="outline"
+                  className="mb-6 border-emerald/30 bg-emerald/5 px-4 py-1.5 text-emerald"
+                >
+                  <Sprout className="mr-1.5 h-3.5 w-3.5" />
+                  India&apos;s Verified Agritech Platform
+                </Badge>
 
-              <h1 className="text-3xl font-bold leading-tight tracking-tight text-forest sm:text-4xl md:text-5xl lg:text-6xl">
-                Making India&apos;s Invisible{" "}
-                <span className="bg-gradient-to-r from-emerald to-lime bg-clip-text text-transparent">
-                  Agritech Founders
-                </span>{" "}
-                Visible
-              </h1>
+                <h1 className="text-3xl font-bold leading-tight tracking-tight text-forest sm:text-4xl md:text-5xl lg:text-6xl">
+                  Making India&apos;s Invisible{" "}
+                  <span className="bg-gradient-to-r from-emerald to-lime bg-clip-text text-transparent">
+                    Agritech Founders
+                  </span>{" "}
+                  Visible
+                </h1>
 
-              <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground md:text-xl">
-                The verified impact discovery platform where 4,255+ unfunded
-                agritech startups meet investors, corporates, and the farming
-                community.
-              </p>
+                <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground md:text-xl lg:mx-0">
+                  The verified impact discovery platform where 4,255+ unfunded
+                  agritech startups meet investors, corporates, and the farming
+                  community.
+                </p>
 
-              {/* CTAs */}
-              <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
-                <Link href="/discover">
-                  <Button
-                    size="lg"
-                    className="w-full gap-2 bg-forest text-white shadow-lg shadow-forest/20 hover:bg-forest/90 sm:w-auto"
-                  >
-                    Explore Startups
-                    <ArrowRight className="h-4 w-4" />
-                  </Button>
-                </Link>
-                <Link href="/startups/submit">
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="w-full gap-2 border-forest/20 text-forest hover:bg-forest/5 sm:w-auto"
-                  >
-                    Submit Your Startup
-                  </Button>
-                </Link>
+                {/* CTAs */}
+                <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:gap-4 lg:justify-start">
+                  <Link href="/discover">
+                    <Button
+                      size="lg"
+                      className="w-full gap-2 bg-forest text-white shadow-lg shadow-forest/20 hover:bg-forest/90 sm:w-auto"
+                    >
+                      Explore Startups
+                      <ArrowRight className="h-4 w-4" />
+                    </Button>
+                  </Link>
+                  <Link href="/startups/submit">
+                    <Button
+                      size="lg"
+                      variant="outline"
+                      className="w-full gap-2 border-forest/20 text-forest hover:bg-forest/5 sm:w-auto"
+                    >
+                      Submit Your Startup
+                    </Button>
+                  </Link>
+                </div>
+
+                {/* Stats */}
+                <div className="mt-12 flex items-center justify-center gap-4 sm:gap-8 md:gap-12 lg:justify-start">
+                  {HERO_STATS.map((stat, idx) => (
+                    <div key={stat.label} className="flex items-center gap-4 sm:gap-8 md:gap-12">
+                      {idx > 0 && (
+                        <div className="h-10 w-px bg-border" />
+                      )}
+                      <StatsCounter
+                        value={stat.value}
+                        label={stat.label}
+                        className="text-forest"
+                      />
+                    </div>
+                  ))}
+                </div>
               </div>
 
-              {/* Stats */}
-              <div className="mx-auto mt-14 flex max-w-lg items-center justify-center gap-4 sm:gap-8 md:gap-12">
-                {HERO_STATS.map((stat, idx) => (
-                  <div key={stat.label} className="flex items-center gap-4 sm:gap-8 md:gap-12">
-                    {idx > 0 && (
-                      <div className="h-10 w-px bg-border" />
-                    )}
-                    <StatsCounter
-                      value={stat.value}
-                      label={stat.label}
-                      className="text-forest"
-                    />
-                  </div>
-                ))}
+              {/* Right: Mascot */}
+              <div className="relative mx-auto hidden lg:block">
+                <div className="absolute -inset-4 rounded-full bg-gradient-to-br from-emerald/10 to-lime/10 blur-2xl" />
+                <Image
+                  src="/images/mascot.png"
+                  alt="AgriVentures India mascot"
+                  width={400}
+                  height={400}
+                  className="relative drop-shadow-xl"
+                  priority
+                />
               </div>
             </div>
           </div>
@@ -422,7 +438,13 @@ export default async function HomePage() {
         <section className="bg-gradient-to-r from-forest to-emerald py-20 md:py-28">
           <div className="container mx-auto px-4">
             <div className="mx-auto max-w-3xl text-center">
-              <ShieldCheck className="mx-auto mb-6 h-12 w-12 text-lime/80" />
+              <Image
+                src="/images/icon-logo.png"
+                alt="AgriVentures India"
+                width={56}
+                height={56}
+                className="mx-auto mb-6 h-14 w-14 drop-shadow-lg"
+              />
               <h2 className="text-3xl font-bold tracking-tight text-white md:text-4xl lg:text-5xl">
                 Join the AgriVentures Community Today
               </h2>

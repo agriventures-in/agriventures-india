@@ -37,6 +37,14 @@ export const metadata: Metadata = {
     "Indian agritech startups",
   ],
   metadataBase: new URL(process.env.NEXTAUTH_URL || "https://www.agriventures.in"),
+  icons: {
+    icon: [
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
+  },
+  manifest: "/site.webmanifest",
   openGraph: {
     type: "website",
     locale: "en_IN",
@@ -75,8 +83,28 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "AgriVentures India",
+    url: "https://www.agriventures.in",
+    logo: "https://www.agriventures.in/images/logo-white-bg.png",
+    description: "India's Verified Agritech Startup Platform",
+    sameAs: [
+      "https://x.com/agriventures_Inx",
+      "https://www.linkedin.com/company/agriventures-india/",
+      "https://www.instagram.com/agriventures.in/",
+    ],
+  }
+
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body
         className={`${dmSans.variable} ${jetbrainsMono.variable} font-sans antialiased`}
       >
