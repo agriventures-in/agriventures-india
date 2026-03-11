@@ -9,6 +9,7 @@ import {
   Users,
   BookOpen,
   Briefcase,
+  MessageSquare,
   ArrowLeft,
   Shield,
 } from "lucide-react"
@@ -19,6 +20,7 @@ const sidebarItems = [
   { href: "/admin/verification", label: "Verification", icon: ShieldCheck },
   { href: "/admin/startups", label: "Startups", icon: Rocket },
   { href: "/admin/users", label: "Users", icon: Users },
+  { href: "/admin/comments", label: "Comments", icon: MessageSquare },
   { href: "/admin/knowledge", label: "Knowledge", icon: BookOpen },
   { href: "/admin/jobs", label: "Jobs", icon: Briefcase },
 ]
