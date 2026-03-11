@@ -82,6 +82,11 @@ export type WizardFormData = {
   demoVideoUrl: string
   fundingStatus: string
   fundingAmount: string
+  // Social Links
+  twitterUrl: string
+  linkedinUrl: string
+  youtubeUrl: string
+  instagramUrl: string
 }
 
 const initialFormData: WizardFormData = {
@@ -114,6 +119,10 @@ const initialFormData: WizardFormData = {
   demoVideoUrl: "",
   fundingStatus: "",
   fundingAmount: "",
+  twitterUrl: "",
+  linkedinUrl: "",
+  youtubeUrl: "",
+  instagramUrl: "",
 }
 
 export function SubmitWizard() {
@@ -174,6 +183,10 @@ export function SubmitWizard() {
           demoVideoUrl: formData.demoVideoUrl || undefined,
           fundingStatus: formData.fundingStatus || undefined,
           fundingAmount: formData.fundingAmount || undefined,
+          twitterUrl: formData.twitterUrl || undefined,
+          linkedinUrl: formData.linkedinUrl || undefined,
+          youtubeUrl: formData.youtubeUrl || undefined,
+          instagramUrl: formData.instagramUrl || undefined,
         }
       default:
         return {}
@@ -240,6 +253,12 @@ export function SubmitWizard() {
         demoVideoUrl: formData.demoVideoUrl || undefined,
         fundingStatus: formData.fundingStatus || undefined,
         fundingAmount: formData.fundingAmount || undefined,
+        socialLinks: {
+          twitterUrl: formData.twitterUrl || undefined,
+          linkedinUrl: formData.linkedinUrl || undefined,
+          youtubeUrl: formData.youtubeUrl || undefined,
+          instagramUrl: formData.instagramUrl || undefined,
+        },
       }
 
       const res = await fetch("/api/startups", {
@@ -254,7 +273,7 @@ export function SubmitWizard() {
       }
 
       toast.success("Your startup has been submitted successfully! It will be reviewed shortly.")
-      router.push("/discover")
+      router.push("/startups/submit/success")
     } catch (error) {
       toast.error(
         error instanceof Error ? error.message : "Something went wrong. Please try again."
